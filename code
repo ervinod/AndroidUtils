@@ -1,0 +1,1855 @@
+=============================================================================================
+	Check email validaion
+=============================================================================================
+  
+  public static boolean isValidEmail(CharSequence target) {
+    return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+  }
+  
+  OR
+  
+  private boolean isValidEmailId(String email){
+
+    return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+              + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+              + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+              + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+              + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+              + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
+     }
+  
+
+=============================================================================================
+	Validate Mobile No starting Digit
+=============================================================================================
+
+	private boolean validateNumber(String num) {
+	    if(num.length = 10 && !num[0].equals("0")){
+		return true;
+	    } else {
+		return false;
+	    }
+	}
+
+  OR
+
+	editTextMobileNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                String enteredString = s.toString();
+                if (enteredString.startsWith("0")) {
+                    Toast.makeText(RegisterActivity.this,
+                            "Mobile no should not start with zero",
+                            Toast.LENGTH_SHORT).show();
+                    if (enteredString.length() > 0) {
+                        editTextMobileNo.setText(enteredString.substring(1));
+                    } else {
+                        editTextMobileNo.setText("");
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
+=============================================================================================	
+	Call Fragment method from Activity
+=============================================================================================
+	((EditGalleryImageActivity)  getActivity()).hideVisibility();
+
+
+	or 
+
+	Activity testActivity = getActivity();
+
+	if(testActivity instanceof ParentActivity) {
+	    ((ParentActivity) testActivity).someMethodInParentActivity();
+	}
+
+
+=============================================================================================	
+	Long click listner on textview
+=============================================================================================
+
+	Select your text manually and then perform a long click:
+
+	textView.post(new Runnable() {
+	    @Override
+	    public void run() {
+		Selection.selectAll((Spannable) tv.getText());
+		tv.performLongClick();
+	    }
+	});
+
+	The problem is that the built-in text selection CAB is private and uses multiple private classes. You'd need 
+	to copy a lot of code or access a bunch of methods with reflection to use it.
+
+	You could make your own CAB menu but you'd also need the controller handles which is again a lot of code.
+
+	A simple solution would be to live with what you have and use my above suggested method. If you want to avoid
+	calling your long click listener you can remove it while calling the cab:
+
+	Selection.selectAll((Spannable) tv.getText());
+	tv.setOnLongClickListener(null);
+	tv.performLongClick();
+	tv.setOnLongClickListener(mLongClickListener);
+
+
+============================================================================================================
+	Firebase invite activity
+============================================================================================================
+
+     Intent shareIntent1 = new Intent(Intent.ACTION_SEND);
+     shareIntent1.setType("text/plain");
+     shareIntent1.putExtra(Intent.EXTRA_TEXT, "Download Enthuons Chat app - http://www.androidlearnings.com/enthuons_chat_1.0.0.apk");
+     startActivity(Intent.createChooser(shareIntent1, "Share App Link"));
+     Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+            .setMessage(getString(R.string.invitation_message))
+            .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+            .setEmailHtmlContent("<html><body>" +
+                         "<h3>Enthuons Chatting App</h3>" +
+                         "<a href=\"%%APPINVITE_LINK_PLACEHOLDER%%\">Install Now!</a>" +
+                         //"<a href=\"http://androidlearnings.com/enthuons_chat_1.0.0.apk\">Install Now!</a>" +
+                         "<body></html>")
+                                .setEmailSubject(getString(R.string.invitation_title))
+                                .build();
+     startActivityForResult(intent, REQUEST_INVITE);
+
+
+===============================================================================================================
+	send data from current activity and get that data in previous activity
+===============================================================================================================
+
+	Intent intent = new Intent();
+	intent.putExtra("editTextValue", "value_here");
+	setResult(RESULT_OK, intent);        
+	finish();
+
+	And in Activity1, receive data with onActivityResult:
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    if (requestCode == 1) {
+		 if(resultCode == RESULT_OK) {
+		     String strEditText = data.getStringExtra("editTextValue");
+		 }     
+	    }
+	} 
+
+===============================================================================================================
+	hide soft keyboard when touch outside edittext layout
+===============================================================================================================
+
+	1. First set folowing 2 xml attributes in container layout
+		android:clickable="true"
+            	android:focusableInTouchMode="true"
+	2.create method to hide soft keyboard
+		
+		public void hideSoftKeyboard(View view) {
+		InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	    }
+	3. set OnFocusChangeListner on edittext
+		et_UserName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            	@Override
+            	public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideSoftKeyboard(view);
+                }
+            }
+        });
+
+===============================================================================================================
+	Make button with round corner and touch effect
+===============================================================================================================	
+
+	1. Create new Android Resource File in drawable folder with following code
+
+	button_backgroun.xml
+	<?xml version="1.0" encoding="utf-8"?>
+	<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	    <item android:state_pressed="false" >
+		<shape xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:dither="true"
+		    android:shape="rectangle">
+		    <corners
+		        android:radius="20dp" />
+		    <solid android:color="@color/colorPrimary" />
+		    <size
+		        android:width="0dp"
+		        android:height="0dp" />
+		</shape>
+	    </item>
+
+	    <item android:state_pressed="true" >
+		<shape xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:dither="true"
+		    android:shape="rectangle">
+		    <corners
+		        android:radius="20dp" />
+		    <solid android:color="@color/colorPrimaryDark" />
+		    <size
+		        android:width="0dp"
+		        android:height="0dp" />
+		</shape>
+	    </item>
+
+	</selector>
+	
+	2. set button attributes in xml as follows
+
+	   <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_background"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="SAVE"
+                android:textAllCaps="true"
+                android:textColor="#FFF"
+                android:textSize="15dp"/>
+
+
+===============================================================================================================
+	Include any layout file in xml layout
+===============================================================================================================	
+
+	<include layout="@layout/header"/>
+	where header is xml layout file in layout folder
+
+
+===============================================================================================================
+	Get/ Compare api version code 
+===============================================================================================================	
+
+	if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP){
+		    //current android version is greater than LOLLIPOP 
+	}else{
+		    //current android version is less than LOLLIPOP
+	}
+
+===============================================================================================================
+	Create directory and Directory inside directory
+===============================================================================================================	
+
+	 File directory = new File(Environment.getExternalStorageDirectory() + "/EnthuonsChat");
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+            File insideFolder = new File (directory,"Images");
+            if (!insideFolder.exists()) {
+                insideFolder.mkdir();
+            }
+
+
+===============================================================================================================
+	Create String with current time and date
+===============================================================================================================	
+
+	final String image_name = DateFormat.format("yyyy-MM-dd_hhmmss", new Date()).toString()+ "_camera.jpg";
+
+	Output string = "2018-06-01_113748_camera.jpg"
+
+
+
+===============================================================================================================
+	Check if URL is valid URL
+===============================================================================================================	
+	
+	Patterns.WEB_URL.matcher(potentialUrl).matches()
+	It will return True if URL is valid and false if URL is invalid.
+
+
+===============================================================================================================
+	Convert JSON to getter and setters model class
+===============================================================================================================	
+	
+	visit folowing link
+	http://www.jsonschema2pojo.org/
+
+
+===============================================================================================================
+	Replacing manifest attributes tool:replace
+===============================================================================================================	
+
+	Uses tool:replace"" attribute in app manifest as follows
+	
+	 <application
+		android:name=".PhotoApp"
+		android:resizeableActivity="false"
+		android:largeHeap="true"
+		android:icon="@mipmap/ic_launcher_foreground"
+		android:label="@string/app_name"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:theme="@style/AppTheme"
+		tools:replace="android:icon, android:label, android:theme, android:name,android:allowBackup"
+		android:allowBackup="false">
+
+===============================================================================================================
+	Save ImageView image as image file
+===============================================================================================================	
+	
+	myImageView.setDrawingCacheEnabled(true);
+        myImageView.buildDrawingCache(true);
+
+        //create the bitmaps
+        Bitmap zoomedBitmap = Bitmap.createScaledBitmap(myImageView.getDrawingCache(true), 
+							myImageView.getWidth(), myImageView.getHeight(), true);
+
+        myImageView.setDrawingCacheEnabled(false);
+
+        File myFile = new File(Environment.getExternalStorageDirectory()
+                + File.separator + "DCIM"+File.separator + ""
+                + System.currentTimeMillis() + ".JPG");
+        FileOutputStream fileOutputStream = null;
+        try {
+                fileOutputStream = new FileOutputStream(myFile);
+                zoomedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                fileOutputStream.close();
+
+        } catch (FileNotFoundException e) {
+
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+
+===============================================================================================================
+	Launch file picker with MimeType
+===============================================================================================================	
+
+	String MP3Type = null;
+        String MP3extension = "mp3";
+      
+        MP3Type = android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension(MP3extension);
+ 	String[] mimeTypes ={"application/pdf",MP3Type};
+
+	
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
+            if (mimeTypes.length > 0) {
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+            }
+        } else {
+            String mimeTypesStr = "";
+            for (String mimeType : mimeTypes) {
+                mimeTypesStr += mimeType + "|";
+            }
+            intent.setType(mimeTypesStr.substring(0,mimeTypesStr.length() - 1));
+        }
+        startActivityForResult(Intent.createChooser(intent,"ChooseFile"), FILE_PICKER_REQUEST_CODE);
+
+     
+===============================================================================================================
+	App count badge (notification count)
+===============================================================================================================	
+
+	https://github.com/leolin310148/ShortcutBadger
+
+
+===============================================================================================================
+	Apply Show/ hide password icon in edittext
+===============================================================================================================	
+
+	compile 'com.github.scottyab:showhidepasswordedittext:0.8'
+
+
+
+
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:layout_below="@+id/tv_username"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorWhite"
+                android:text="You are the only who can deserve the life you create"/>
+
+===============================================================================================================
+	Setting onClickListner to row in onBindViewHolder of RecyclerView
+===============================================================================================================	
+
+
+
+	((View) ((ItemAllUsersViewHolder) holder).txtName.getParent().getParent().getParent())
+                    .setOnClickListener(new View.OnClickListener()  {
+                        @Override
+                        public void onClick(final View view) {
+				
+			}
+
+================================================================================================================
+	Library to make scrollview item zoomed when get focused
+================================================================================================================
+
+	https://github.com/yarolegovich/DiscreteScrollView
+
+	https://github.com/alibaba/UltraViewPager
+
+
+
+================================================================================================================
+	Change ActionBar 3 Dots color or Icon
+================================================================================================================
+
+	1. Create Theme in Styles.xml
+	
+		<style name="CustomTheme" parent="Theme.AppCompat.Light">
+			<item name="colorPrimary">@color/colorPrimary</item>
+			<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+			<item name="colorAccent">@color/colorAccent</item>
+			<item name="contentInsetStart">0dp</item>
+			<item name="contentInsetEnd">0dp</item>
+			<item name="android:actionOverflowButtonStyle">@style/DotsLightTheme</item>
+		
+	    	</style>
+
+	   	<style name="DotsLightTheme" parent="@style/Widget.AppCompat.ActionButton.Overflow" >
+			<item name="android:tint">@color/colorWhite</item>
+		</style>
+
+		<style name="OverFlow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+			<item name="android:src">@drawable/ic_btn_more</item>
+		</style>
+
+	2. Set above theme to activity in Manifest file
+	
+		 <activity
+		    android:name="com.enthuons.fchat.ui.ChatActivity"
+		    android:parentActivityName="com.enthuons.fchat.MainActivity"
+		    android:screenOrientation="portrait"
+		    android:theme="@style/CustomTheme"
+		    android:windowSoftInputMode="stateHidden" >
+
+		<meta-data
+		    android:name="android.support.PARENT_ACTIVITY"
+		    android:value="com.enthuons.fchat.MainActivity" />
+
+		</activity>
+
+
+=================================================================================================================
+	Add onComplete and onFailure listerner to firebase reference (task)
+=================================================================================================================
+
+        FirebaseDatabase.getInstance().getReference().child("")
+        	.child("").child("").removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                       		@Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        // your success code here
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                       // your failure code here
+                                    }
+                                });
+
+
+=================================================================================================================
+	Check if Activity is in Multi-Window mode
+=================================================================================================================
+
+	if (((Activity)getContext()).isInMultiWindowMode())
+        {
+                Toast.makeText(context, "I am in Split-Screen mode", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+==================================================================================================================
+	Check multiple Permission in API level 23 and greater
+==================================================================================================================
+
+	tep 1:
+
+	 String[] permissions = new String[]{
+		Manifest.permission.INTERNET,
+		Manifest.permission.READ_PHONE_STATE,
+		Manifest.permission.READ_EXTERNAL_STORAGE,
+		Manifest.permission.WRITE_EXTERNAL_STORAGE,
+		Manifest.permission.VIBRATE,
+		Manifest.permission.RECORD_AUDIO,
+	};
+	Step 2:
+
+	 private boolean checkPermissions() {
+	    int result;
+	    List<String> listPermissionsNeeded = new ArrayList<>();
+	    for (String p : permissions) {
+		result = ContextCompat.checkSelfPermission(this, p);
+		if (result != PackageManager.PERMISSION_GRANTED) {
+		    listPermissionsNeeded.add(p);
+		}
+	    }
+	    if (!listPermissionsNeeded.isEmpty()) {
+		ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 100);
+		return false;
+	    }
+	    return true;
+	}
+	Step 3:
+
+	 @Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	    if (requestCode == 100) {
+		if (grantResults.length > 0
+		        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+		    // do something
+		}
+		return;
+	    }
+	}
+	Step 4: in onCreate of Activity call function checkPermissions();
+
+
+==================================================================================================================
+	Add shadow below toolbar
+==================================================================================================================
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:theme="@style/Toolbar"/>
+
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_shadow_height"
+        android:layout_marginBottom="@dimen/toolbar_shadow_adjust"
+        android:background="@drawable/toolbar_shadow" />
+
+	**** Add thix code in toolbar_shadow.xml ****
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<shape xmlns:android="http://schemas.android.com/apk/res/android">
+	    <gradient
+		android:startColor="#00000000"
+		android:endColor="#40000000"
+		android:angle="90.0"
+		android:centerColor="#05000000" />
+	</shape>
+
+
+==================================================================================================================
+	How to add github library as module(insteat of dependency) in exixting project
+==================================================================================================================
+
+	Reference :- https://github.com/MagicMicky/FreemiumLibrary/wiki/Import-the-library-in-Android-Studio
+
+	1. File ->New-> Import module -> selection your library_project
+	(Then include 'library_project' will be add in settings.gradle file.) 
+
+	2. File-> Project Structure -> app-> Select Dependencies Tab -> select library_project, If library_project not displaying then, Click 		on + button then select your library_project.
+
+	3. Clean and build your project
+	(After that Check,add 
+
+	dependencies {
+	    compile fileTree(dir: 'libs', include: ['*.jar'])
+	    compile project(':library_project')
+	}
+	lines will be added in your project specific build.gradle file which is located on app folder or directory(hint: Not in main 			build.gradle file where classpath is defined) )
+	4. if those lines will not present then manually add them, then Clean and rebuild your project again.
+
+	5. Check that a folder will be created named by library_project in your app folder.
+
+
+	6.If any icon or task merging error is created then, in AndroidManifest file add <application tools:replace="icon, label,theme"> 
+
+
+==================================================================================================================
+	Android Tap on Target Library
+==================================================================================================================
+
+	https://github.com/sjwall/MaterialTapTargetPrompt
+
+
+
+
+==================================================================================================================
+	Instagram like image zooming library
+==================================================================================================================
+
+	https://github.com/imablanco/Zoomy
+
+
+
+
+==================================================================================================================
+	Read all phonebook conacts
+==================================================================================================================
+
+	Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+	while (phones.moveToNext())
+	{
+	  String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+	  String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+	}
+	phones.close();
+
+
+==================================================================================================================
+	Read all phonebook conacts (without duplicate contacts)
+==================================================================================================================
+
+	String[] projection    = new String[] {     ContactsContract.RawContacts._ID, 
+                                                    ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY,  
+                                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID,      
+                                                    ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+                
+        Cursor cursor = getContentResolver().query(  ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection,   
+                                                    ContactsContract.RawContacts.ACCOUNT_TYPE + "= ?",
+                                                    new String[] { "com.whatsapp" }, 
+                                                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
+        
+        int indexName = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+        int indexNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        int indexUid=cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
+
+        if(cursor != null   && cursor.moveToFirst()){
+
+
+             while (cursor.moveToNext()) {
+
+                 String name   = cursor.getString(indexName);
+                 String number = cursor.getString(indexNumber);
+                 String uid=cursor.getString(indexUid);
+
+                 ContactModel usersModel = new ContactModel();
+                 usersModel.setContactName(name);
+                 usersModel.setContactNo(number);
+                 wpContacts.add(usersModel);
+             }
+
+        }
+        cursor.close();
+        
+       wpContacts= removeDuplicates(wpContacts);
+
+
+	**** Here is removeDuplicates() function ****
+
+	public List<ContactModel> removeDuplicates(List<ContactModel> list) {
+        Set set = new TreeSet(new Comparator() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+                if (((ContactModel) o1).getContactName().equalsIgnoreCase(((ContactModel) o2).getContactName())
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        set.addAll(list);
+        final List newList = new ArrayList(set);
+        return newList;
+    }
+
+
+==================================================================================================================
+	Sending image/ multiple images via Intent Chooser
+==================================================================================================================
+
+	1. Sending single image:
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+		shareIntent.setType("image/jpeg");
+		startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+
+	2. sending multiple images:
+		ArrayList<Uri> imageUris = new ArrayList<Uri>();
+		imageUris.add(imageUri1); // Add your image URIs here
+		imageUris.add(imageUri2);
+
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+		shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUris);
+		shareIntent.setType("image/*");
+		startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+		
+		
+==================================================================================================================
+	Share app link via Intent Chooser
+==================================================================================================================
+
+		public void shareApp(){
+        String playStoreLink = "https://play.google.com/store/apps/details?id=" + getPackageName();
+        Intent i=new Intent(android.content.Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(android.content.Intent.EXTRA_SUBJECT,"Stori Stream");
+        i.putExtra(android.content.Intent.EXTRA_TEXT, "Download Stori Stream app "+playStoreLink);
+        startActivity(Intent.createChooser(i,"Share via"));
+    }
+
+
+==================================================================================================================
+	Android chat design library
+==================================================================================================================
+
+	https://github.com/stfalcon-studio/ChatKit
+
+
+
+==================================================================================================================
+	Firebase Listener to get sub childs data of specific child
+==================================================================================================================
+
+
+	ref.addListenerForSingleValueEvent(new ValueEventListener() {
+	    @Override
+	    public void onDataChange(DataSnapshot snapshot) {
+		for (DataSnapshot child : snapshot.getChildren()) {
+		    ...
+		}
+	    }
+	}
+
+
+==================================================================================================================
+	Draw Polyline using array of coordinates
+==================================================================================================================
+
+	List<LatLng> coordinates;
+
+	 @Override
+	    public void onMapReady(GoogleMap googleMap) {
+		mMap = googleMap;
+
+		PolylineOptions polylineOptions = new PolylineOptions().
+		        geodesic(true).
+		        color(Color.BLUE).
+		        width(8);
+
+		for (int i = 0; i < coordinates.size(); i++)
+		    polylineOptions.add(coordinates.get(i));
+
+		mMap.addPolyline(polylineOptions);
+
+	LatLng visitStart = coordinates.get(0);
+        LatLng visitEnd = coordinates.get(coordinates.size()-1);
+
+	MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(visitStart);
+        markerOptions.title("Visit Start");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mMap.addMarker(markerOptions);
+
+        MarkerOptions markerOptions2 = new MarkerOptions();
+        markerOptions2.position(visitEnd);
+        markerOptions2.title("Visit End");
+        markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        mMap.addMarker(markerOptions2);
+
+        LatLngBounds bounds = new LatLngBounds.Builder().include(visitStart).include(visitEnd).build();
+        Point displaySize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(displaySize);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+
+
+	}
+
+
+
+
+
+==================================================================================================================
+	Get data of child with specific key (orderby) 
+==================================================================================================================
+	
+                ref.child("temp_user").orderByChild("username").equalTo(sMobile).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            
+
+                        } else {
+                           
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        waitingDialog.dismiss();
+                    }
+                });
+
+
+==================================================================================================================
+	Mailchimp account to send email
+==================================================================================================================
+
+	https://login.mailchimp.com
+	
+	vinodpatil.enthuons@gmail.com
+	enthuonsmanagerial
+	Enthuons@2018
+
+
+==================================================================================================================
+	Check Internet connectivity
+==================================================================================================================
+
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	
+	public boolean isOnline() {
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+		return true;
+	    }
+	    return false;
+	}
+
+
+==================================================================================================================
+	Setting File provider when working with file manipulation
+==================================================================================================================
+	
+	1. Add following code in Manifest
+	<provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+	2. Create provider_paths.xml 
+	<?xml version="1.0" encoding="utf-8"?>
+	<paths>
+	    <external-path name="external_files" path="."/>
+	    <cache-path name="cache" path="/" />
+	</paths>
+
+	3. Now use file provider in Activity as fllows:
+	String authorities = ProfileActivity.this.getApplicationContext().getPackageName() + ".provider";
+        Uri mSelectedFileUri = FileProvider.getUriForFile(ProfileActivity.this, authorities, selectedFile);
+	Note: In above code, the type of selectedFile argument is File type
+
+
+
+==================================================================================================================
+	Hide menu item in NavigationView
+==================================================================================================================
+
+	NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+	Menu menu =navigationView.getMenu();
+	MenuItem target = menu.findItem(R.id.nav_target);
+	target.setVisible(false);
+
+	NavigationView nav_drawer = (NavigationView) findViewById(R.id.nav_drawer);
+	nav_drawer.getMenu().findItem(R.id.navigation_item_1).setVisible(false);
+
+	
+==================================================================================================================
+	Hide menu item group in NavigationView
+==================================================================================================================
+	<group
+	android:id="@+id/group_1"
+	android:checkableBehavior="single"
+	android:visible="false">
+
+	navigationView.getMenu().setGroupVisible(R.id.group_1, true)
+==================================================================================================================
+	Set Onclick listener on recyclerview item (in onBindViewHolder ) 
+==================================================================================================================
+	((View) holder.salesman.getParent().getParent().getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+==================================================================================================================
+	Firebase Listeners
+==================================================================================================================
+
+	1.addListenerForSingleValueEvent()
+
+	Read data once - it triggers once and then does not trigger again.
+
+
+	2. ValueEventListener
+
+	The onDataChange() method is called every time data is changed at the specified database reference, including changes to children.
+
+
+==================================================================================================================
+	Display Alert Dialog
+==================================================================================================================
+
+  	AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+                builder.setTitle("Alert Dialog Title");
+                builder.setMessage("Alert Dialog Message");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        
+
+                    }
+                });
+
+         builder.create().show();
+
+==================================================================================================================
+	Start activity to get result from that activity when activity finishes.
+==================================================================================================================
+
+	1. Start Activity:
+
+	startActivityForResult(new Intent(“YourFullyQualifiedClassName”),requestCode);
+	In the activity you can make use of setData() to return result.
+
+	2. Add code when activity is finishing
+
+	Intent data = new Intent();
+	String text = "Result to be returned...."
+	data.setData(Uri.parse(text));
+	setResult(RESULT_OK, data);
+	finish();
+
+	3. Get result in onActivityResult of Parent Activity
+
+
+==================================================================================================================
+	Changing XML drawable color programatically
+==================================================================================================================
+	
+	1. XML Drawable code:
+	<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	    <item
+		android:id="@+id/btn_background_drawable">
+		<shape android:shape="rectangle">
+		    <corners android:radius="20dp"/>
+		    <solid android:color="@color/colorPrimary" />
+		</shape>
+	    </item>
+	</layer-list>
+
+	2. Set above XML drawable asbackground to view(button, textview etc)
+
+	3.Change view color programatically
+	LayerDrawable l1 = (LayerDrawable) holder.payment_status.getBackground();
+        GradientDrawable paymentStatusDrawable= (GradientDrawable) l1.findDrawableByLayerId(R.id.btn_background_drawable);
+	//Note in above line btn_background_drawable is item id of XML drawable created in step 1 
+        paymentStatusDrawable.setColor(getResources().getColor(R.color.colorGreen));
+
+
+==================================================================================================================
+	Set custom icon to notification in Mi(Xiaomi) devices
+==================================================================================================================
+	
+	try {
+        Class miuiNotificationClass = Class.forName("android.app.MiuiNotification");
+        Object miuiNotification = miuiNotificationClass.newInstance();
+        Field field = miuiNotification.getClass().getDeclaredField("customizedIcon");
+        field.setAccessible(true);
+
+        field.set(miuiNotification, true);
+        field = notification.getClass().getField("extraNotification");
+        field.setAccessible(true);
+
+        field.set(notification, miuiNotification);
+    	} catch (Exception e) {
+		
+    	}
+
+
+
+==================================================================================================================
+	Sending JSON array in volley request
+==================================================================================================================	
+
+
+	https://stackoverflow.com/a/42000668/4472727
+
+
+==================================================================================================================
+	Get the key of pushed value in firebase
+==================================================================================================================
+
+	String mKey = myRef.push().getKey();
+	....
+	....
+	myRef.child(mKey).setValue(new ChatGroup());
+
+
+===================================================================================================================
+	OnBind is not called in service
+===================================================================================================================
+
+	the issue is that the examples that show the creation of the service, don't include the onBind method or they
+	have the following sample code or it generates this for you:
+
+	public IBinder onBind(Intent intent) {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+	This causes the onServiceConnected method to fail or never actually get executed. The fix is VERY simple, which is the following:
+
+	public IBinder onBind(Intent intent) {
+	    return mBinder;
+	}
+	Where you could create a simple binder such as the following to return:
+
+	private final IBinder mBinder = new LocalBinder();
+	public class LocalBinder extends Binder {
+	    public ConferenceService getService() {
+	    return ConferenceService.this;
+	  }
+	}
+
+===================================================================================================================
+	Upload multiple images to server using volley
+===================================================================================================================
+
+	http://sachinverma.co.in/upload-multiple-images-to-server-using-volley-android/
+
+
+==============================================================================================
+	Stylish Fonts
+==============================================================================================
+
+	https://befonts.com/
+
+==============================================================================================
+	WebRTC Video call notification
+==============================================================================================
+	https://github.com/signalapp/Signal-Android/blob/master/src/org/thoughtcrime/securesms/webrtc/CallNotificationBuilder.java
+
+
+==============================================================================================
+	https://evgenii.com/blog/spring-button-animation-on-android/
+==============================================================================================
+	
+
+	1. Create Android Resource File ==>> res/anim/bounce.xml
+	<?xml version="1.0" encoding="utf-8"?>
+	<set xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	    <scale
+		android:duration="2000"
+		android:fromXScale="0.3"
+		android:toXScale="1.0"
+		android:fromYScale="0.3"
+		android:toYScale="1.0"
+		android:pivotX="50%"
+		android:pivotY="50%" />
+	</set>
+
+	2. Add following code on Button click
+	final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+    	button.startAnimation(myAnim);
+
+	3. Implement the bounce interpolator
+	class MyBounceInterpolator implements android.view.animation.Interpolator {
+	    private double mAmplitude = 1;
+	    private double mFrequency = 10;
+
+	    MyBounceInterpolator(double amplitude, double frequency) {
+		mAmplitude = amplitude;
+		mFrequency = frequency;
+	    }
+
+	    public float getInterpolation(float time) {
+		return (float) (-1 * Math.pow(Math.E, -time/ mAmplitude) *
+		        Math.cos(mFrequency * time) + 1);
+	    }
+	}
+	4. Use the bounce interpolator
+	final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+
+    	// Use bounce interpolator with amplitude 0.2 and frequency 20
+    	MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+    	myAnim.setInterpolator(interpolator);
+
+    	button.startAnimation(myAnim);
+
+==============================================================================================
+	Enable Multidex in application (if min SDK < 21)
+==============================================================================================
+
+	Step 1:
+	android {
+	    defaultConfig {
+		...
+		minSdkVersion 15 
+		targetSdkVersion 25
+		multiDexEnabled true
+	    }
+	    ...
+	}
+
+	dependencies {
+	  compile 'com.android.support:multidex:1.0.1'
+	}
+
+	Step 2:
+	public class MyApplication extends MultiDexApplication {
+	  @Override
+	  protected void attachBaseContext(Context base) {
+	     super.attachBaseContext(base);
+	     MultiDex.install(this);
+	  }
+	}
+
+	Step 3:
+	<?xml version="1.0" encoding="utf-8"?>
+	<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	    package="your package name">
+	    <application
+		android:name=".MyApplication" >
+		...
+	    </application>
+	</manifest>
+
+
+
+==============================================================================================
+	Creating BroadcastReceiver
+==============================================================================================
+
+	Android provides this component, which can listen to global events (e.g., battery events,
+	network events, etc.) as well as custom events. You can use this component to create a 
+	custom event that is triggered when the upload is complete.
+
+	To do this, you need to create a custom class that extends BroadcastReceiver, register it 
+	in the manifest, and use Intent and IntentFilter to create the custom event. To trigger the 
+	event, you will need the sendBroadcast method.
+
+	1. Manifest:
+
+	<receiver android:name="UploadReceiver">
+	   
+	    <intent-filter>
+		<action android:name="com.example.upload">
+		</action>
+	    </intent-filter>
+	   
+	</receiver>
+	
+	2. Receiver:
+
+	public class UploadReceiver extends BroadcastReceiver {
+
+	    @Override
+	    public void onReceive(Context context, Intent intent) {
+		if (intent.getBoolean(“success”, false) {
+		    Activity activity = (Activity)context;
+		    activity.updateUI();
+	    }
+
+	}
+	
+	3. Sender:
+
+	Intent intent = new Intent();
+	intent.setAction("com.example.upload"); 
+	sendBroadcast(intent);
+
+
+==============================================================================================
+	Creating Handler
+==============================================================================================
+
+	new Handler().postDelayed(new Runnable() {
+
+	     @Override
+	     public void run() {
+		 // TODO Auto-generated method stub
+		 Intent intent = new Intent(context, AcceptReject.class);
+		 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		 context.startActivity(intent);
+	     }
+	 }, 2000);
+
+
+
+==============================================================================================
+	Bitbucket project syncying
+==============================================================================================
+
+
+	if more than one user is using repo
+	git stash save
+
+	get update code
+	git pull
+
+	git commit -m "Your comment goes here"
+
+	git push
+
+
+==============================================================================================
+	Create thumbnail of image
+==============================================================================================
+
+	1. Create class Image Utils with following methods
+
+	public static Bitmap getResizedBitmap(int targetW, int targetH,  String imagePath) {
+
+		// Get the dimensions of the bitmap
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+		//inJustDecodeBounds = true <-- will not load the bitmap into memory
+		bmOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(imagePath, bmOptions);
+		int photoW = bmOptions.outWidth;
+		int photoH = bmOptions.outHeight;
+
+		// Determine how much to scale down the image
+		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+		// Decode the image file into a Bitmap sized to fill the View
+		bmOptions.inJustDecodeBounds = false;
+		bmOptions.inSampleSize = scaleFactor;
+		bmOptions.inPurgeable = true;
+
+		Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+		return(bitmap);
+	}
+
+	public static String encodeBase64(Bitmap imgBitmap){
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+		byte[] byteArray = byteArrayOutputStream.toByteArray();
+		return Base64.encodeToString(byteArray, Base64.DEFAULT);
+	}
+
+	2. Get scaled bitmap from Imager URI
+
+		Bitmap scaledImage = ImageUtils.getResizedBitmap(80, 100, file.getPath());
+
+	3. Now encode bitmap to base64 and get it in String format and store it to database
+
+                String imageThumbnail = ImageUtils.encodeBase64(scaledImage);
+
+	4. To display the the thumbnail on imageview you have to convert base64 string back
+	 to bitmap and you will get bitmap.	
+	
+
+	
+==============================================================================================
+	Java Interview Questions
+==============================================================================================
+
+	http://www.java2novice.com/java_interview_questions/
+
+
+
+==============================================================================================
+	Sendine Email in Android				
+==============================================================================================
+	1. Javamail API - requres SMTP server( google)
+	2. Mailgun - https://www.simplifiedcoding.net/mailgun-android-example/
+		
+
+==============================================================================================
+	AsyncTask Library				
+==============================================================================================
+
+	https://github.com/Arasthel/AsyncJobLibrary
+
+
+==============================================================================================
+	Firebase push notification with image using PHP				
+==============================================================================================
+
+	1. Triggering notification from android app
+	https://www.simplifiedcoding.net/firebase-cloud-messaging-android/
+
+	2. Subscribe to topic
+	https://www.simplifiedcoding.net/firebase-cloud-messaging-tutorial-android/
+
+
+==============================================================================================
+	Check if service is running in background		
+==============================================================================================
+
+	1.) In Activity class:
+
+	private boolean isMyServiceRunning(Class<?> serviceClass) {
+	    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+		if (serviceClass.getName().equals(service.service.getClassName())) {
+		    return true;
+		}
+	    }
+	    return false;
+	}
+	2.) In Non-Activity class (BroadcastReceiver):
+
+	private boolean isMyServiceRunning(Class<?> serviceClass,Context context) {
+		ActivityManager manager = (ActivityManager)context. getSystemService(Context.ACTIVITY_SERVICE);
+		for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+		    if (serviceClass.getName().equals(service.service.getClassName())) {
+		        Log.i("Service already","running");
+		        return true;
+		    }
+		}
+		Log.i("Service not","running");
+		return false;
+	    }
+
+	3. From BroadcastReceiver
+
+	private boolean isMyServiceRunning(Context context) {
+	ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+	for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    if (MyService.class.getName().equals(service.service.getClassName())) {
+		return true;
+	    }
+	}
+
+	return false;
+	}
+
+==============================================================================================
+	Android WebRTC video tutorial	
+==============================================================================================
+
+	https://www.youtube.com/watch?v=NIs9MEapAsw
+
+
+==============================================================================================
+	Node multi room chat app	
+==============================================================================================
+
+	Video - https://www.youtube.com/watch?v=edLHaRWWWtQ
+	Code - https://github.com/andrewjmead/node-course-2-chat-app
+	Modified Version - https://github.com/angristan/node-chat-app
+
+==============================================================================================
+	Click listener for RecyclerView item
+==============================================================================================
+
+	https://android.jlelse.eu/click-listener-for-recyclerview-adapter-2d17a6f6f6c9
+
+
+==============================================================================================
+	Android animation for textview/ layout
+==============================================================================================
+
+	https://www.journaldev.com/9481/android-animation-example
+
+	
+
+
+
+**************************************************************************************
+	 Text drawable library
+**************************************************************************************
+	
+	This light-weight library provides images with letter/text like the Gmail app. 
+
+	https://github.com/amulyakhare/TextDrawable
+	compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+
+
+**************************************************************************************
+	Pdf viewer with min SDK 15 
+**************************************************************************************
+
+	https://github.com/rameshvoltella/Android-Viger_View_Pager_PDF_OpenSource
+	compile 'com.github.aerdy:Android-Viger_View_Pager_PDF_OpenSource:-SNAPSHOT'
+
+
+**************************************************************************************
+	Audjast view automaticlly in layout (like multiple tags in row) 
+**************************************************************************************
+	A FlowLayout for Android, which allows child views flow to next row when there
+	 is no enough space. The spacing between child views can be calculated by the 
+	FlowLayout so that the views are evenly placed.
+
+	https://github.com/nex3z/FlowLayout
+
+
+
+**************************************************************************************
+	StudyBook Response Format
+**************************************************************************************
+
+	Response Format for StudyBook
+
+	{
+  	
+		"status": true,
+  
+		"message": "Feeds found.",
+  
+		"data": [
+    
+				{
+      
+    
+				
+				},
+
+				
+				{
+      
+    
+					
+				}
+  
+			],
+ 
+		 "error": []
+	
+}
+	
+
+**************************************************************************************
+	Hide layout when Recyclerview is scrolled
+**************************************************************************************
+
+
+	    DemoRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                visibleItemCount = LM.getChildCount();
+                totalItemCount = LM.getItemCount();
+                firstVisibleItem = LM.findFirstVisibleItemPosition();
+
+                if (dy > 0) {
+                    ((BaseABNavActivity) activity).PostFAB.setVisibility(View.GONE);
+                    ((BaseABNavActivity) activity).bottomPanelRL.setVisibility(View.GONE);
+                } else if (dy < 0) {
+//                    ((BaseABNavActivity) activity).PostFAB.setVisibility(View.VISIBLE);
+                    ((BaseABNavActivity) activity).bottomPanelRL.setVisibility(View.VISIBLE);
+                }
+                if (totalItemCount > 10) { // if the list is more than 10 then only pagination will work
+                    if (loading) {
+                        if (totalItemCount > previousTotalItemCount) {
+                            loading = false;
+                            previousTotalItemCount = totalItemCount;
+                        }
+                    }
+                    if (!loading && (totalItemCount - visibleItemCount)
+                            <= (firstVisibleItem + visibleThreshold)) {
+
+                        int i = 0;
+                        while (i < totalItemCount) {
+
+                            if (feedArrayList.size() > 0 && feedArrayList.size() > totalItemCount - 1 - i) {
+                                if (feedArrayList.get(totalItemCount - 1 - i).getId().equals("00")) {
+                                    i++;
+                                } else {
+                                    last_post_id = feedArrayList.get(totalItemCount - 1 - i).getId();
+                                    i = totalItemCount;
+                                }
+                            }
+                        }
+                        if (isalreadyconnected == 0) {
+//                            Log.e("feeds ", "called 2 " + feedArrayList.size());
+                            RefreshFeedList(false);// from pagination
+                            isalreadyconnected = 1;
+                        }
+                        loading = true;
+                    }
+                }
+            }
+        });
+
+
+	Circular recyclerview
+	https://stackoverflow.com/questions/31253555/how-do-i-create-a-circular-endless-recyclerview
+
+
+	Recyclerview with radio group	
+	http://www.zoftino.com/android-recyclerview-radiogroup
+
+
+**************************************************************************************
+	Generate SHA key Hash (req for facebook login)
+**************************************************************************************
+
+
+    public static void generateKeyHash(Context ctx) {
+
+        try {
+            PackageInfo info = ctx.getPackageManager().getPackageInfo(
+                    ctx.getPackageName(),
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("TAG_KEY_HASH", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+	
+**************************************************************************************
+	Send ArayList of object type (Model) to next Activity
+**************************************************************************************
+
+	1. First implent your Model class to Serializable
+	2. In sending activity 
+			Intent resultIntent = new Intent(FirstActivity.this, SecondActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("RESULT_MODEL", modelList);
+            resultIntent.putExtras(bundle);
+            startActivity(resultIntent);
+	3. In receiving activity
+			ArrayList<QuizModel> quiz_list;
+			
+			Bundle bundleObject = getIntent().getExtras();
+			quiz_list = (ArrayList<QuizModel>) bundleObject.getSerializable("RESULT_MODEL");
+
+**************************************************************************************
+	Ecommerce app using Firebase
+**************************************************************************************
+
+	https://github.com/singhkshitij/MagicPrint-ECommerce-App-Android
+
+	
+**************************************************************************************
+	Set custom dialog background color to transparent
+**************************************************************************************
+
+	dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+	
+	or
+	
+	dialog.getWindow().setBackgroundDrawable(new ColorDrawableResource(R.color.transparent));
+	
+**************************************************************************************
+	Set custom dialog width to match parent
+**************************************************************************************
+	
+	dialog = new Dialog(MainActivity.this, LinearLayoutCompat.LayoutParams.MATCH_PARENT);
+	
+**************************************************************************************
+	Share App
+**************************************************************************************
+	
+	String playStoreLink = "https://play.google.com/store/apps/details?id=" + getPackageName();
+            
+    Bitmap bitmap = getBitmapFromView(cv_dashboard, cv_dashboard.getChildAt(0).getHeight(), cv_dashboard.getChildAt(0).getWidth());
+    String bitmapPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap,"Quiz Result", null);
+    Uri bitmapUri = Uri.parse(bitmapPath);
+    Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+    shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey please check this application " + "https://play.google.com/store/apps/details?id=" +getPackageName());
+    shareIntent.setType("image/*");
+    startActivity(Intent.createChooser(shareIntent,"Share with"));
+	
+**************************************************************************************
+	Android P network security issue
+**************************************************************************************
+	if API base url is http, in Android Pie version network request failed
+	1. Create network_security_config.xm file in res> XML folder.
+		
+		<?xml version="1.0" encoding="utf-8"?>
+		<network-security-config>
+			<domain-config cleartextTrafficPermitted="true">
+				<domain includeSubdomains="true">35.163.32.122</domain>
+			</domain-config>
+		</network-security-config>
+
+	2. add following line in <application> tage of Manifest file
+		android:networkSecurityConfig="@xml/network_security_config"
+		
+		
+**************************************************************************************
+	Generate randon no in range
+**************************************************************************************
+	
+		public int getRandomInteger(int upper_bound, int lower_bound) {
+        Random rand = new Random();
+        int random_integer = rand.nextInt(upper_bound - lower_bound) + lower_bound;
+        return random_integer;
+    }
+
+
+**************************************************************************************
+	Disable taking screenshot in activity
+**************************************************************************************
+
+	You need to set flag before setContentView() as follows:
+	
+	public class MainActivity extends Activity {
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE);
+        setContentView(R.layout.activity_main);
+    }
+}
+
+**************************************************************************************
+	Set custom value at particular index of textview
+**************************************************************************************
+
+
+    coinsTextTV.setText(String.format("You currently have %s points", rewardPoints.getReward_points()));
+	
+	
+	
+**************************************************************************************
+	Play mp3 from raw folder
+**************************************************************************************	
+
+	res -> raw
+	
+	final int[] resID = {R.raw.play, R.raw.stop};
+	
+	// stops any current playing audio
+	mediaPlayer.reset();
+    mediaPlayer =  MediaPlayer.create(getApplicationContext(), R.raw.play);
+	// mediaPlayer =  MediaPlayer.create(getApplicationContext(), resID[i]);
+    mediaPlayer.start();
+
+	
+***************************************************************************************************
+	Get device id 
+***************************************************************************************************
+
+	public String getDeviceId() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
+    }
+	
+	
+***************************************************************************************************
+	 Set custom font to whole application (TextView)
+***************************************************************************************************
+
+	https://stackoverflow.com/a/16407123
+
+	1. Create new font resource folder res => font and add font file in it
+	2. Create new font resource file custom_font.xml with following code
+		
+		<?xml version="1.0" encoding="utf-8"?>
+		<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+			<font
+				android:fontStyle="normal"
+				android:fontWeight="400"
+				android:font="@font/montserrat_regular" />
+			<font
+				android:fontStyle="italic"
+				android:fontWeight="400"
+				android:font="@font/montserrat_regular" />
+		</font-family>
+	
+	3. Add following in Styles.xml file (AppTheme)
+	
+		<item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+	
+		<style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+			<item name="android:fontFamily">@font/custom_font</item>
+		</style>\
+		
+		
+***************************************************************************************************
+	 Set custom font to specific TextView only
+***************************************************************************************************
+
+	1. Follow step no 1 and 2 as mentioned above.
+	2.    <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:fontFamily="@font/custom_font"/>
+
+***************************************************************************************************
+	Integrate Admob ads in android
+***************************************************************************************************
+
+	https://www.tutlane.com/tutorial/android/android-integrate-admob-rewarded-video-ads-in-app
+
+
+	
+***************************************************************************************************
+	Show PDF in Webview
+***************************************************************************************************
+	
+	
+	if (url.contains(".pdf")) {
+            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + url);
+        } else {
+            webView.loadUrl(url);
+        }
+
+***************************************************************************************************
+	Image Sliders
+***************************************************************************************************
+		
+	https://github.com/metes/Android-Slider
+	
+	
+***************************************************************************************************
+	add press back again to exit toast
+***************************************************************************************************\
+
+	boolean doubleBackToExitPressedOnce = false;
+
+	
+	public void CustomBackPressed() {
+        //Checking for fragment count on backstack
+        if (!doubleBackToExitPressedOnce) {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit.", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            finish();
+            return;
+        }
+    }
+	
+***************************************************************************************************
+	Create round bottom rml drawable
+***************************************************************************************************
+	
+	<?xml version="1.0" encoding="utf-8"?>
+	<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+		<item>
+			<shape android:shape="rectangle" />
+		</item>
+		<item
+			android:bottom="0dp"
+			android:left="-100dp"
+			android:right="-100dp"
+			android:top="-110dp">
+			<shape android:shape="oval">
+				<gradient
+					android:angle="315"
+					android:endColor="#FF7A01"
+					android:startColor="@color/redText" />
+			</shape>
+		</item>
+	</layer-list>
+
+***************************************************************************************************
+	Get instatnce of fragment
+***************************************************************************************************
+
+	// declare manager globally
+	public static FragmentManager manager;
+	
+	// add following line in onCreate()
+	manager = getSupportFragmentManager();
+	
+	// check instance
+	 Fragment fragment = manager.findFragmentById(R.id.container);
+        if (fragment instanceof LoginFragment) {
+            finish();
+        }
+		
+***************************************************************************************************
+	Get instatnce of fragment
+***************************************************************************************************		
+		
+		 if (!isTaskRoot()
+                && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
+                && getIntent().getAction() != null
+                && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+
+            finish();
+            return;
+        }
+		
+***************************************************************************************************
+	OTP auto read functionality
+***************************************************************************************************	
+		
+		implementation 'com.github.stfalcon:smsverifycatcher:0.3.2'
+		
+		
+***************************************************************************************************
+	Send Retrofit parameters as HashMap
+***************************************************************************************************	
+	1. Create API call
+	@FormUrlEncoded
+	@POST("registration")
+    Call<OTPResponse> registration(
+            @FieldMap Map<String,String> params);
+	2. Add input parameters	
+	
+	Map<String,String> params = new HashMap<>();
+            params.put(Constant.STR_USERNAME,username);
+            params.put(Constant.STR_PASSWORD,password);
+	3. Send HashMap as params
+	getLogin(params);
+	
+***************************************************************************************************
+	Show Snackbar
+***************************************************************************************************	
+
+	Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+
+***************************************************************************************************
+	Shuffle RecyclerView items
+***************************************************************************************************
+	
+	https://github.com/wasabeef/recyclerview-animators
+	
+***************************************************************************************************
+	Viewpager Transformers
+***************************************************************************************************
+	https://github.com/geftimov/android-viewpager-transformers
+
+
+***************************************************************************************************
+
+***************************************************************************************************
+
+
+
+	
