@@ -1851,4 +1851,29 @@
 ***************************************************************************************************
 	String.format("%.2f", Double.valueOf("46542.5435657468"));
 
-	
+***************************************************************************************************
+	Dialog
+***************************************************************************************************
+
+	public void showProfilePictureDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Choose Media");
+        builder.setMessage("Choose your image from ?");
+        builder.setPositiveButton("CAMERA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkStorage();
+                getImageFromCamera();
+            }
+        });
+        builder.setNegativeButton("GALLERY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkStorage();
+                getImageFromGallery();
+            }
+        });
+
+        builder.create().show();
+    }
+
