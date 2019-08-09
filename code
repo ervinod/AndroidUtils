@@ -1896,3 +1896,22 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	Hide undrline below EditText
 ***************************************************************************************************
 	android:background="@null"
+	
+***************************************************************************************************
+	Capitalize first character in string
+***************************************************************************************************
+	    public static String CapitalizeFirstLetterText(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            if (text.contains(" ")) {
+                String[] strarr = text.split(" +");
+                String fname = null;
+                for (String name : strarr) {
+                    name = Character.toUpperCase(name.charAt(0)) + name.substring(1); // d
+                    fname = (fname == null ? name : fname + " " + name);
+                }
+                return fname;
+            } else return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+        }
+        return text;
+    }
+
