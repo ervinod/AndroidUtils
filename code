@@ -1914,4 +1914,13 @@ shared project on GitHub". Click on the link provided in that message to go to G
         }
         return text;
     }
+   
+***************************************************************************************************
+	Custom calender like speedo meter 
+***************************************************************************************************
+
+	https://github.com/RameshBhupathi/PickerView
+	
+	compile 'com.ramesh.mypicker:pickerview:1.1'
+    
 
