@@ -1923,4 +1923,10 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	
 	compile 'com.ramesh.mypicker:pickerview:1.1'
     
+***************************************************************************************************
+	Add image screenshot to README.md on github
+***************************************************************************************************
 
+	<img src="https://github.com/ervinod/BottomAppBar/blob/master/Screenshot.png" width="300">
+	
+	
