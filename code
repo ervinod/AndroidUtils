@@ -1928,5 +1928,10 @@ shared project on GitHub". Click on the link provided in that message to go to G
 ***************************************************************************************************
 
 	<img src="https://github.com/ervinod/BottomAppBar/blob/master/Screenshot.png" width="300">
+
+***************************************************************************************************
+	Hide activity statusbar programatically
+***************************************************************************************************
 	
+	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	
