@@ -1933,5 +1933,10 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	Hide activity statusbar programatically
 ***************************************************************************************************
 	
+
+***************************************************************************************************
+	Add equal spacing to gridview items
+***************************************************************************************************
 	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	
+	https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
