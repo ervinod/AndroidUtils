@@ -1940,3 +1940,50 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	
 	https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
+	
+***************************************************************************************************
+	Show popup menu
+***************************************************************************************************
+	1 - Create the menu layout menu_layout.xml:
+	<?xml version="1.0" encoding="utf-8"?>
+	<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	    <item
+		android:id="@+id/item_edit"
+		android:showAsAction="ifRoom|withText"
+		android:title="Edit"
+		android:visible="true"/>
+	    <item
+		android:id="@+id/item_delete"
+		android:showAsAction="ifRoom|withText"
+		android:title="Delete"
+		android:visible="true"/>
+	</menu>
+	
+	2 - Create a popup menu, inflate the xml layout and show it:
+	
+	public void showMenu (View view)
+	{
+	    PopupMenu menu = new PopupMenu (this, view);
+	    menu.setOnMenuItemClickListener (new PopupMenu.OnMenuItemClickListener ()
+	    {
+		@Override
+		public boolean onMenuItemClick (MenuItem item)
+		{
+		    int id = item.getItemId();
+		    switch (id)
+		    {
+			case R.id.item_edit: Log.i (Tag, "settings"); break;
+			case R.id.item_delete: Log.i (Tag, "about"); break;
+		    }
+		    return true;
+		}
+	    });
+	    menu.inflate (R.menu.menu_layout);
+	    menu.show();
+	}
+	
+***************************************************************************************************
+	
+***************************************************************************************************
+	
+	
