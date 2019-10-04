@@ -2314,3 +2314,55 @@ shared project on GitHub". Click on the link provided in that message to go to G
 		}
 
 	    }
+	    
+ ***************************************************************************************************
+	Managing Fragment Transactions
+ ***************************************************************************************************
+ 
+ 	public void replaceFragment(Fragment fragment) {
+        String backStateName = fragment.getClass().getSimpleName();
+        String fragmentTag = backStateName;
+        Log.d(backStateName, "replaceFragment: " + getSupportFragmentManager().getBackStackEntryCount());
+
+
+        FragmentManager manager = this.getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null) {
+            //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(R.id.goto_container, fragment, fragmentTag);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
+    }
+
+    public void addFragment(Fragment fragment) {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(R.id.goto_container, fragment);
+        ft.commit();
+    }
+
+    public void popAllStack(){
+        FragmentManager fm = this.getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStack();
+        }
+    }
+
+    public void popBackStack(){
+        FragmentManager fm = this.getSupportFragmentManager();
+        fm.popBackStack();
+    }
+    
+    @Override
+    public void onBackPressed() {
+
+        Fragment fragment = manager.findFragmentById(R.id.container_main);
+        if (fragment!=null && fragment instanceof ProfileFragment  ) {
+            popBackStack();
+        }else
+            super.onBackPressed();
+    }
