@@ -1983,7 +1983,334 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	}
 	
 ***************************************************************************************************
+	Upload Image to Amazon S3 Bucket
+***************************************************************************************************
+	1. Cognito credential provider.
+	public static final String COGNITO_POOL_ID = "us-east-1:2ef0d6b7-e833-445d-a5b4-959c1a30d5c9";
+    	public static final Regions AWS_REGION = Regions.US_EAST_1 ;
+    	public static final String BUCKET_NAME = "your_bucket_name";
+    	public static final String AWS_URL = "https://s3.amazonaws.com/";
+	
+	2. Create UploadAmazonS3 that will contains functionality to upload image
+	
+	public class UploadAmazonS3 {
+
+	    private CognitoCachingCredentialsProvider credentialsProvider = null;
+	    private AmazonS3Client s3Client = null;
+	    private TransferUtility transferUtility = null;
+	    private static UploadAmazonS3 uploadAmazonS3;
+
+	    /**
+	     * Creating single tone object by defining private.
+	     * <p>
+	     * At the time of creating
+	     * </P>
+	     */
+	    private UploadAmazonS3(Context context, String canito_pool_id) {
+		/**
+		 * Creating the object of the getCredentialProvider object. */
+		credentialsProvider = getCredentialProvider(context, canito_pool_id);
+		/**
+		 * Creating the object  of the s3Client */
+		s3Client = getS3Client(context, credentialsProvider);
+
+		/**
+		 * Creating the object of the TransferUtility of the Amazone.*/
+		transferUtility = getTransferUtility(context, s3Client);
+
+	    }
+
+	    public static UploadAmazonS3 getInstance(Context context, String canito_pool_id) {
+		if (uploadAmazonS3 == null) {
+		    uploadAmazonS3 = new UploadAmazonS3(context, canito_pool_id);
+		    return uploadAmazonS3;
+		} else {
+		    return uploadAmazonS3;
+		}
+
+	    }
+
+	    /**
+	     * <h3>Upload_data</h3>
+	     * <p>
+	     * Method is use to upload data in the amazone server.
+	     * <p>
+	     * </P>
+	     */
+
+	    public void Upload_data(String buckate_name, String fileName, File file, final Upload_CallBack callBack) {
+
+		Log.d("Amazon transferUtility", transferUtility + "Amazon transferUtility file = " + file);
+		if (transferUtility != null && file != null) {
+		    TransferObserver observer = transferUtility.upload(buckate_name, fileName, file);
+		    observer.setTransferListener(new TransferListener() {
+			@Override
+			public void onStateChanged(int id, TransferState state) {
+			    if(TransferState.COMPLETED == state){
+				callBack.sucess("sucess");
+			    }else if(TransferState.FAILED == state){
+				callBack.error("error");
+			    }
+			}
+
+			@Override
+			public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+
+			    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+			    if (percentage == 100) {
+				//callBack.sucess("sucess");
+			    }
+
+			}
+
+			@Override
+			public void onError(int id, Exception ex) {
+			    callBack.error(id + ":" + ex.toString());
+			}
+		    });
+
+
+		} else {
+		    callBack.error("Amamzones3 is not intialize or File is empty !");
+		}
+	    }
+
+
+	    /**
+	     * This method is used to get the CredentialProvider and we provide only context as a parameter.
+	     *
+	     * @param context Here, we are getting the context from calling Activity.
+	     */
+	    private CognitoCachingCredentialsProvider getCredentialProvider(Context context, String pool_id) {
+		if (credentialsProvider == null) {
+		    credentialsProvider = new CognitoCachingCredentialsProvider(
+			    context.getApplicationContext(),
+			    pool_id, // Identity Pool ID
+			    Constant.AWS_REGION // Region
+		    );
+		}
+		return credentialsProvider;
+	    }
+
+	    /**
+	     * This method is used to get the AmazonS3 Client
+	     * and we provide only context as a parameter.
+	     * and from here we are calling getCredentialProvider() function.
+	     *
+	     * @param context Here, we are getting the context from calling Activity.
+	     */
+	    private AmazonS3Client getS3Client(Context context, CognitoCachingCredentialsProvider cognitoCachingCredentialsProvider) {
+		if (s3Client == null) {
+		    s3Client = new AmazonS3Client(cognitoCachingCredentialsProvider);
+		}
+		return s3Client;
+	    }
+
+	    /**
+	     * This method is used to get the Transfer Utility
+	     * and we provide only context as a parameter.
+	     * and from here we are, calling getS3Client() function.
+	     *
+	     * @param context Here, we are getting the context from calling Activity.
+	     */
+	    private TransferUtility getTransferUtility(Context context, AmazonS3Client amazonS3Client) {
+		if (transferUtility == null) {
+		    transferUtility = new TransferUtility(amazonS3Client, context.getApplicationContext());
+		}
+		return transferUtility;
+	    }
+
+
+	    /**
+	     * Interface for the sucess callback fro the Amazon uploading .
+	     */
+	    public interface Upload_CallBack {
+		/**
+		 * Method for sucess .
+		 *
+		 * @param sucess it is true on sucess and false for falure.
+		 */
+		void sucess(String sucess);
+
+		/**
+		 * Method for falure.
+		 *
+		 * @param errormsg contains the error message.
+		 */
+		void error(String errormsg);
+
+	    }
+
+	    public void delete_Item(String bucketName, String keyName) {
+		try {
+		    s3Client.deleteObject(new DeleteObjectRequest(bucketName, keyName));
+		} catch (AmazonServiceException ase) {
+		    System.out.println("Caught an AmazonServiceException.");
+		    System.out.println("Error Message:    " + ase.getMessage());
+		    System.out.println("HTTP Status Code: " + ase.getStatusCode());
+		    System.out.println("AWS Error Code:   " + ase.getErrorCode());
+		    System.out.println("Error Type:       " + ase.getErrorType());
+		    System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+		    System.out.println("Caught an AmazonClientException.");
+		    System.out.println("Error Message: " + ace.getMessage());
+		}
+	    }
+	   
+	}
+
+
+	3. Upload image using following function
+	
+	    private void uploadPicToAmazon() {
+
+		UploadAmazonS3 uploadAmazonS3 = UploadAmazonS3.getInstance(activity, Constant.COGNITO_POOL_ID);
+		uploadAmazonS3.Upload_data(Constant.BUCKET_NAME, "ProfileImage/" + newProfileImageUri.getLastPathSegment(), new File(newProfileImageUri.getPath()), new UploadAmazonS3.Upload_CallBack() {
+		    @Override
+		    public void sucess(String image_url) {
+
+			Helper.hideProgress(mProgress);
+			//profile_picture = Constant.AWS_URL + "ProfileImage/" + newProfileImageUri.getLastPathSegment();
+			profile_picture = Constant.AWS_URL + Constant.BUCKET_NAME+ "/ProfileImage/" + newProfileImageUri.getLastPathSegment();
+			Log.d("AWS SUCCESS", ":" + image_url);
+			Log.d("IMAGE_URL", ":" + profile_picture);
+
+		    }
+
+		    @Override
+		    public void error(String errormsg) {
+			Helper.hideProgress(mProgress);
+			Toast.makeText(activity, errormsg, Toast.LENGTH_SHORT).show();
+			Log.d("AMAZON_ERROR", "" + errormsg);
+		    }
+		});
+	    }
+	    
+	    
+
+
 	
 ***************************************************************************************************
+	Get image from Gallery or Camera
+***************************************************************************************************	
+
+	1. Initialize variables:
 	
+		private File newFile;
+    		private Uri newProfileImageUri;
+    		private String state, imageName, profile_picture = "";
+		
+	2. Create temporary File to hold image(call this finction in onCreate())
+	    public void checkStorage() {
+		imageName = "";
+		state = Environment.getExternalStorageState();
+
+
+		String folder_main = Constant.APP_FOLDER;
+		File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+		if (!f.exists()) {
+		    f.mkdirs();
+		}
+		imageName = Constant.APP_FOLDER + "_" + String.valueOf(System.nanoTime()) + ".png";
+
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+		    newFile = new File(f, imageName);
+		    newProfileImageUri = Uri.fromFile(newFile);
+		    //newProfileImageUri = FileProvider.getUriForFile(ProfileActivity.this, BuildConfig.APPLICATION_ID + ".provider",newFile);
+		} else {
+		    newFile = new File(activity.getFilesDir(), imageName);
+		    newProfileImageUri = Uri.fromFile(newFile);
+		    //cameranewProfileImageUri = FileProvider.getUriForFile(ProfileActivity.this, BuildConfig.APPLICATION_ID + ".provider",newFile);
+		}
+	    }
+
+	3. Choose image from Camera or Gallery:
 	
+	    public void showSelectImageDialog() {
+
+		final Dialog dialog = new Dialog(activity);
+		dialog.setContentView(R.layout.layout_image_dialog);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+		TextView tvCamera = (dialog.findViewById(R.id.tvCamera));
+		TextView tvGallery = (dialog.findViewById(R.id.tvGallery));
+
+
+		tvCamera.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			dialog.dismiss();
+			checkStorage();
+			getImageFromCamera();
+		    }
+		});
+		tvGallery.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			dialog.dismiss();
+			checkStorage();
+			getImageFromGallery();
+		    }
+		});
+		dialog.show();
+	    }
+
+
+	private void getImageFromGallery() {
+        checkStorage();
+        try {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.putExtra("return-data", true);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
+        } catch (Exception e) {
+            
+            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            photoPickerIntent.putExtra("return-data", true);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, REQUEST_CODE_GALLERY);
+        }
+    }
+
+    private void getImageFromCamera() {
+        try {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, newProfileImageUri);
+            cameraIntent.putExtra("return-data", true);
+            cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(cameraIntent, REQUEST_CODE_CAMERA);
+        } catch (Exception e) {
+            Toast.makeText(activity, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.d("Error", e.toString());
+        }
+	
+
+	4. Get selected/captured image URI:
+	
+	   @Override
+	   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && null != data) {
+		    try {
+			InputStream inputStream = getContentResolver().openInputStream(data.getData());
+			FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+			Helper.copyStream(inputStream, fileOutputStream);
+			fileOutputStream.close();
+			inputStream.close();
+
+			Helper.showProgress(mProgress);
+			uploadPicToAmazon();
+		    } catch (FileNotFoundException e) {
+			e.printStackTrace();
+			Toast.makeText(activity, "Something went wrong, Try again...", Toast.LENGTH_LONG).show();
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    }
+		} else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+		    Helper.showProgress(mProgress);
+		    uploadPicToAmazon();
+		}
+
+	    }
