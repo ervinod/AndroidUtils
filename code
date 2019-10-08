@@ -2535,3 +2535,34 @@ shared project on GitHub". Click on the link provided in that message to go to G
 		return "com.android.externalstorage.documents".equals(uri.getAuthority());
 	    }
 	    
+ ***************************************************************************************************
+	Call fragment method from adapter (using interface)
+ ***************************************************************************************************
+ 
+ 	1. Pass the fragment object in adapter
+ 	adapter = new MyAdapter(getContext(), TestFragment.this, testArrayList);
+        recycleRuleList.setAdapter(adapter);
+	
+	2. Set current instance f fragment to this:
+	public TestSeriesAdapter(Context context, ArrayList<Test> testArrayList, Fragment fragment) {
+        this.context = context;
+        this.testArrayList = testArrayList;
+	this.fragment = fragment;
+	
+    	}
+	
+	3. Crate public method in fragment
+	public void ItemClicked(int position){
+		Toast.makeText(this, "Position: "+position, Toast.LENGTH_SHORT).show();
+	}
+
+        4. Call ItemClicked method from onBindViewHolder() of adapter like this
+	((TestFragment)fragment).ItemClicked(position);
+
+ 
+  ***************************************************************************************************
+	Call fragment method from adapter (without using interface)
+ ****************************************************************************************************
+ 
+ 
+	    
