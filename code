@@ -2560,9 +2560,9 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	((TestFragment)fragment).ItemClicked(position);
 
  
-  ***************************************************************************************************
+  ****************************************************************************************************
 	Call fragment method from adapter (using interface)
- ****************************************************************************************************
+  ****************************************************************************************************
  
  	1. Create interface inside adapter class
 	
@@ -2602,6 +2602,22 @@ shared project on GitHub". Click on the link provided in that message to go to G
 		   mCallBack.yourMethodName();
 		}
 	    });
+	    
+  ****************************************************************************************************
+	Get starting characters from string
+  ****************************************************************************************************
+  
+	   public String getStartingChars(String str, int count) {
+		return str.length() < count ? str : str.substring(0, count);
+	    }
+    
+  ****************************************************************************************************
+	Get ending characters from string
+  ****************************************************************************************************
+  
+	  public String getEndingChars(String str, int count) {
+		return str.length() < count ? str : str.substring(str.length()-count);
+	    }
 
  
 	    
