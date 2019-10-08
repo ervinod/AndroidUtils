@@ -2536,7 +2536,7 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	    }
 	    
  ***************************************************************************************************
-	Call fragment method from adapter (using interface)
+	Call fragment method from adapter (without using interface)
  ***************************************************************************************************
  
  	1. Pass the fragment object in adapter
@@ -2561,8 +2561,47 @@ shared project on GitHub". Click on the link provided in that message to go to G
 
  
   ***************************************************************************************************
-	Call fragment method from adapter (without using interface)
+	Call fragment method from adapter (using interface)
  ****************************************************************************************************
  
+ 	1. Create interface inside adapter class
+	
+ 	public Interface CallBack{
+         void yourMethodName();
+
+         }
+	 
+	 2. Now in fragment class implement your interface method like below
+
+	public class YourFragment implements CallBack{
+	    
+	     @Override
+	     public void yourMethodName(){
+	      //"here call your fragment method or do any bussiness logic 
+	      }    
+	  }
+	  
+	 3. Finally you should call your interface method in your adapter onclick listener like below 
+	 before that pass your interface instance to your adapter constructor
+
+	public class YourAdapterClass extends BaseAdapter {
+	
+	  private CallBack mCallBack;
+	  Context context;
+	  
+	   public YourAdapterClass (Context context, CallBack callback){
+	    mCallBack = callback;
+	    this.context = context;
+	      }
+	    }
+	    
+	4. Then inside your onClickListener call your interface method like this
+
+	    @Override
+		public void onClick(View v) {
+		   mCallBack.yourMethodName();
+		}
+	    });
+
  
 	    
