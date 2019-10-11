@@ -2619,5 +2619,65 @@ shared project on GitHub". Click on the link provided in that message to go to G
 		return str.length() < count ? str : str.substring(str.length()-count);
 	    }
 
+  ****************************************************************************************************
+	Send firebase push notification without server
+  ****************************************************************************************************
+
+	    public void sendPushNotification(String sender_name, String receiver_name, String sender_id, String receiver_id,
+                                     String user_image, String qb_id, String message) {
+		JSONObject json = new JSONObject();
+		try {
+		    JSONObject notificationData = new JSONObject();
+		    notificationData.put("type", Constant.PUSH_TYPE_CHAT);
+		    notificationData.put("sender_name", sender_name);
+		    notificationData.put("receiver_name", receiver_name);
+		    notificationData.put("sender_id", sender_id);
+		    notificationData.put("receiver_id", receiver_id);
+		    // notificationData.put("user_image",user_image);
+		    notificationData.put("room_id", "0");
+		    notificationData.put("qb_id", qb_id);
+		    notificationData.put("message", message);
+
+		    Log.d("MESSAGE", notificationData.toString());
+
+		    json.put("data", notificationData);
+		    json.put("to", device_token);
+		    Log.d("OPPONENT_TOKEN", device_token);
+
+		    String newJson = json.toString().replaceAll(" ", "\\$");
+
+		    json = new JSONObject(newJson);
+		} catch (JSONException e) {
+		    e.printStackTrace();
+		}
+
+		RequestQueue queue = Volley.newRequestQueue(MyChatActivity.this);
+
+		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", json, new com.android.volley.Response.Listener<JSONObject>() {
+		    @Override
+		    public void onResponse(JSONObject response) {
+
+			Log.d("onResponse", "" + response.toString());
+		    }
+		}, new com.android.volley.Response.ErrorListener() {
+		    @Override
+		    public void onErrorResponse(VolleyError error) {
+
+		    }
+		}) {
+		    @Override
+		    public Map<String, String> getHeaders() throws AuthFailureError {
+
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("Authorization", "key=AIzaSyAW_081eDxBWB78qhME*******");
+			params.put("Content-Type", "application/json; charset=utf-8");
+			return params;
+		    }
+		};
+
+		queue.add(jsonObjectRequest);
+
+	    }
+
  
 	    
