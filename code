@@ -2679,5 +2679,39 @@ shared project on GitHub". Click on the link provided in that message to go to G
 
 	    }
 
+
+  ****************************************************************************************************
+	Send Local Broadcast from fragment
+  ****************************************************************************************************
+	    
+	    
+	In MyActivity, use LocalBroadcastManager to make the broadcast with a filter:
+
+	String filter = "thisIsForMyFragment";
+	Intent intent = new Intent(filter); //If you need extra, add: intent.putExtra("extra","something");
+	LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	In MyFragment, inside onCreateView() add this to register the receiver:
+
+	LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myBroadcastReceiver,
+		new IntentFilter("thisIsForMyFragment"));
+	Following, In MyFragment (outside onCreateView()) create the receiver method to receive the broadcast:
+
+	private final BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver()
+	{
+	    @Override
+	    public void onReceive(Context context, android.content.Intent intent) {
+		Toast.makeText(getActivity(), "Broadcast received!", Toast.LENGTH_SHORT).show();//Do what you want when the broadcast is received...
+
+	    }
+	};
+	Finally, in MyFragment add this to unregister the receiver onDestroyView:
+
+	@Override
+	public void onDestroyView()
+	{
+	    super.onDestroyView();
+	    LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadcastReceiver);
+	}
+
  
 	    
