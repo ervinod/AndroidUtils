@@ -2713,5 +2713,34 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	    LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myBroadcastReceiver);
 	}
 
+
+  ****************************************************************************************************
+	Cardview with round corners at top only
+  ****************************************************************************************************
+	    <FrameLayout
+		android:id="@+id/rootview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_margin="50dp">
+
+		<androidx.cardview.widget.CardView
+		    android:id="@+id/card_view"
+		    android:layout_marginBottom="-10dp"
+		    app:cardCornerRadius="10dp"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    app:cardElevation="15dp"
+		    android:background="#464343">
+
+		    <!--The child view inside the cardview should have extra padding,so that negative margin will not affect the bottom padding of its child.Here normally we have 16dp bottom padding for child + margin bottom of the parent is 3dp=19dp comes.-->
+
+		    <FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:paddingBottom="29dp"/>
+
+		</androidx.cardview.widget.CardView>
+	    </FrameLayout>
+
  
 	    
