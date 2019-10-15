@@ -2742,5 +2742,11 @@ shared project on GitHub". Click on the link provided in that message to go to G
 		</androidx.cardview.widget.CardView>
 	    </FrameLayout>
 
+  ****************************************************************************************************
+	Crash reporter dependency
+  ****************************************************************************************************
+
+
+	compile 'com.balsikandar.android:crashreporter:1.1.0'
  
 	    
