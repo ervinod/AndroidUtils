@@ -2300,8 +2300,7 @@ shared project on GitHub". Click on the link provided in that message to go to G
 			fileOutputStream.close();
 			inputStream.close();
 
-			Helper.showProgress(mProgress);
-			uploadPicToAmazon();
+		
 		    } catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Toast.makeText(activity, "Something went wrong, Try again...", Toast.LENGTH_LONG).show();
@@ -2309,11 +2308,18 @@ shared project on GitHub". Click on the link provided in that message to go to G
 			e.printStackTrace();
 		    }
 		} else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
-		    Helper.showProgress(mProgress);
-		    uploadPicToAmazon();
+		    
 		}
 
 	    }
+	    
+	public void copyStream(InputStream input, OutputStream output) throws IOException {
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = input.read(buffer)) != -1) {
+		    output.write(buffer, 0, bytesRead);
+		}
+	}    
 	    
  ***************************************************************************************************
 	Managing Fragment Transactions
