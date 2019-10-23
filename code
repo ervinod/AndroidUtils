@@ -2751,8 +2751,13 @@ shared project on GitHub". Click on the link provided in that message to go to G
   ****************************************************************************************************
 	Crash reporter dependency
   ****************************************************************************************************
-
-
+  
 	compile 'com.balsikandar.android:crashreporter:1.1.0'
+	
+  ****************************************************************************************************
+	Generate room id using hashCode()
+  ****************************************************************************************************
+
+String room_id = "friend_id".compareTo("your_id") > 0 ? ("your_id" + "friend_id").hashCode() + "" : "" + ("friend_id" + "your_id").hashCode();
  
 	    
