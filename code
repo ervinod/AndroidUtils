@@ -2760,4 +2760,89 @@ shared project on GitHub". Click on the link provided in that message to go to G
 
 String room_id = "friend_id".compareTo("your_id") > 0 ? ("your_id" + "friend_id").hashCode() + "" : "" + ("friend_id" + "your_id").hashCode();
  
+  ****************************************************************************************************
+	Firebase dynamic link sharing
+  ****************************************************************************************************
+  
+  	1. Add Firebase dynamic link dependency.
+	implementation 'com.google.firebase:firebase-dynamic-links:16.1.3'
+	
+	if getting error change any of below dependency version to
+	
+	implementation 'com.google.firebase:firebase-core:16.0.5'
+        implementation 'com.google.firebase:firebase-auth:16.1.0'
+        implementation 'com.google.android.gms:play-services-auth:16.0.1'
+        implementation 'com.google.firebase:firebase-messaging:17.4.0'
+
+	2. Crrate dynamic link on firebase console.
+	
+	3. Call below function to create and share dynamic link of app
+	
+  	public static void shareArticleExternally(String id, final Activity activity) {
+
+        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://www.storistream.com/?postId=" + id))
+                .setDynamicLinkDomain("storistream.page.link")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                .buildShortDynamicLink()
+                .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            String msgHtml = String.format("<p>Let's check Article on StoriStream App."
+                                    + "<a href=\"%s\">Click Here</a>!</p>", shortLink.toString());
+
+                            String msg = "Let's check Article on StoriStream App.. Click on Link : " + shortLink.toString();
+
+                            shareLink(activity, "Share Article", msg, msgHtml);
+                        } else {
+                            Log.d("TASK_EXCEPTION", task.getException().toString());
+                            Toast.makeText(activity, "Article link could not be generated please try again!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    	    }
 	    
+	    public void shareLink(Activity activity, String subject, String msg, String msgHtml) {
+		Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		sharingIntent.putExtra(Intent.EXTRA_TEXT, msg);
+		sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		sharingIntent.putExtra(Intent.EXTRA_HTML_TEXT, msgHtml);
+		if (sharingIntent.resolveActivity(activity.getPackageManager()) != null) {
+		    activity.startActivity(Intent.createChooser(sharingIntent, "Share Article"));
+		}
+
+	    }
+
+	4. Handle dynamic link on Splash Screen
+	
+	    public void CheckDeepLinking() {
+		FirebaseDynamicLinks.getInstance()
+			.getDynamicLink(getIntent())
+			.addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+			    @Override
+			    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+				// Get deep link from result (may be null if no link is found)
+				Uri deepLink = null;
+				if (pendingDynamicLinkData != null) {
+				    deepLink = pendingDynamicLinkData.getLink();
+				}
+				if (deepLink != null) {
+
+				    article_id = deepLink.getQueryParameter("postId");
+				    SharedPrefManager.getInstance(SplashActivity.this).putString(Constant.STR_ARTICLE_ID, article_id);
+
+				    if (deepLink.getBooleanQueryParameter(Constant.STR_ARTICLE_ID, false)) {
+				       /* article_id= deepLink.getQueryParameter(Constant.STR_ARTICLE_ID);*/
+				    }else{
+
+				    }
+				}
+			    }
+			});
+	    }
+
+  
