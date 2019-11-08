@@ -2865,3 +2865,111 @@ String room_id = "friend_id".compareTo("your_id") > 0 ? ("your_id" + "friend_id"
             });
 
   
+   ****************************************************************************************************
+	Add pagination to RecyclerView
+  ****************************************************************************************************
+  
+  1. initialize variables
+  
+    private boolean loading;
+    private int pageSize;
+    private int limit= 20;
+    private int mPage=1;
+    private LinearLayoutManager customLinearLayoutManager = new LinearLayoutManager(activity);;
+    
+  2. Set scroll listener to rectclerview
+  
+     RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                    int position = getCurrentItem();
+                    onPageChanged(position);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) //check for scroll down
+                {
+                    int visibleItemCount = customLinearLayoutManager.getChildCount();
+                    int totalItemCount = customLinearLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = customLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= pageSize) {
+                            loading = false;
+                            ++mPage;
+
+                            //Do pagination.. i.e. fetch more articles
+
+                            if (Helper.isNetworkConnected(activity)) {
+                                getArticles(SharedPrefManager.getInstance(activity).getString(Constant.STR_ID), String.valueOf(mPage), String.valueOf(limit), true);
+                            } else {
+                                Toast.makeText(activity, "Check Internet Connection", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
+                }
+            }
+        };
+
+  	rvArticle.addOnScrollListener(onScrollListener);
+	
+    3. Call below function to fetch data from API
+    
+        public void getArticles(String user_id, String page, String limit, boolean status) {
+		if (Helper.isNetworkConnected(getActivity())) {
+		    showProgress();
+
+		    WebInterface Service = AppController.getRetrofitInstance().create(WebInterface.class);
+		    Call<ArticleResponse> call = Service.get_article(user_id, page, limit, Constant.TYPE_HOME);
+		    call.enqueue(new Callback<ArticleResponse>() {
+			@Override
+			public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+			    layout_refresh.setVisibility(View.GONE);
+			    hideProgress();
+			    if (response.body() != null) {
+				ArticleResponse result = response.body();
+				if (result.getStatus()) {
+
+				    if(status){
+					articleArrayList.addAll(result.getResult().getArticles());
+					loading = !(result.getResult().getArticles().size() == 0);
+				    }else{
+					setInitialState();
+					if (articleArrayList != null && articleArrayList.size() != 0) {
+					    articleArrayList.clear();
+					}
+					articleArrayList.addAll(result.getResult().getArticles());
+				    }
+				    articleAdapter.notifyDataSetChanged();
+
+				} else {
+				    Toast.makeText(getActivity(), result.getMessage(), Toast.LENGTH_SHORT).show();
+				}
+			    }
+			}
+
+			@Override
+			public void onFailure(Call<ArticleResponse> call, Throwable t) {
+			    hideProgress();
+			    layout_refresh.setVisibility(View.VISIBLE);
+			    Toast.makeText(activity, "Something Went Wrong, Try Again", Toast.LENGTH_SHORT).show();
+
+			}
+		    });
+		}
+	    }
+
+  
+      public void setInitialState() {
+        mPage = 1;
+        loading = true;
+        pageSize = articleArrayList.size();
+    }
+
