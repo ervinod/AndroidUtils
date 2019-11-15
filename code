@@ -2865,7 +2865,7 @@ String room_id = "friend_id".compareTo("your_id") > 0 ? ("your_id" + "friend_id"
             });
 
   
-   ****************************************************************************************************
+  ****************************************************************************************************
 	Add pagination to RecyclerView
   ****************************************************************************************************
   
@@ -2972,4 +2972,16 @@ String room_id = "friend_id".compareTo("your_id") > 0 ? ("your_id" + "friend_id"
         loading = true;
         pageSize = articleArrayList.size();
     }
+
+****************************************************************************************************
+	Get Firebase Device Token forcefully
+****************************************************************************************************
+  
+FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String mToken = instanceIdResult.getToken();
+                Log.e("Token",mToken);
+              }
+        });
 
