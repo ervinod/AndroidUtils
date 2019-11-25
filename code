@@ -2988,6 +2988,8 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 ****************************************************************************************************
 	Horizontal flowing progress bar
 ****************************************************************************************************
+	https://github.com/castorflex/SmoothProgressBar
+	
 	compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
 	
 	<fr.castorflex.android.smoothprogressbar.SmoothProgressBar
