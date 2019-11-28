@@ -3009,3 +3009,36 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 	    app:spb_progressiveStart_speed="1.5"
 	    app:spb_progressiveStop_speed="3.4"
 	    />
+	    
+****************************************************************************************************
+	Check if device support fingerprint sensor
+****************************************************************************************************
+	    
+	_fingerprintManager = (FingerprintManager) _context.getSystemService(FINGERPRINT_SERVICE);
+
+	public boolean fingerprintEnabled()
+	{
+	    if (!_fingerprintManager.isHardwareDetected())
+	    {
+		// Device doesn't support fingerprint authentication
+		return false;
+	    }
+	    else if (ActivityCompat.checkSelfPermission(_context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED)
+	    {
+		return false;
+	    }
+	    else if (!_keyguardManager.isKeyguardSecure())
+	    {
+		return false;
+	    }
+	    else if (!_fingerprintManager.hasEnrolledFingerprints())
+	    {
+		// User hasn't enrolled any fingerprints to authenticate with
+		return false;
+	    }
+	    else
+	    {
+		// Everything is ready for fingerprint authentication
+		return true;
+	    }
+	}
