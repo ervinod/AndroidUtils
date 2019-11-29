@@ -2325,7 +2325,7 @@ shared project on GitHub". Click on the link provided in that message to go to G
 	Managing Fragment Transactions
  ***************************************************************************************************
  
- 	public void replaceFragment(Fragment fragment) {
+ public void replaceFragment(Fragment fragment) {
         String backStateName = fragment.getClass().getSimpleName();
         String fragmentTag = backStateName;
         Log.d(backStateName, "replaceFragment: " + getSupportFragmentManager().getBackStackEntryCount());
@@ -2343,6 +2343,24 @@ shared project on GitHub". Click on the link provided in that message to go to G
             ft.commit();
         }
     }
+
+
+    public static void attachFragment ( int fragmentHolderLayoutId, Fragment fragment, Context context) {
+
+	String tag fragment.getClass().getSimpleName();
+	FragmentManager manager = ( (AppCompatActivity) context ).getSupportFragmentManager ();
+	FragmentTransaction ft = manager.beginTransaction ();
+
+	    if (manager.findFragmentByTag ( tag ) == null) { 
+	    // No fragment in backStack with same tag
+		ft.add ( fragmentHolderLayoutId, fragment, tag );
+		ft.addToBackStack ( tag );
+		ft.commit ();
+	    }
+	    else {
+		ft.show ( manager.findFragmentByTag ( tag ) ).commit ();
+	    }
+	}
 
     public void addFragment(Fragment fragment) {
         FragmentManager fragmentManager = this.getSupportFragmentManager();
