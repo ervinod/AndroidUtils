@@ -2372,7 +2372,35 @@ shared project on GitHub". Click on the link provided in that message to go to G
         }else
             super.onBackPressed();
     }
+    
+    //if you want to get notified when backstack changes then add following function
+    // Say you want to change Toolbar title when new fragment is added of removed
+    public void addStackListener(){
+    	getSupportFragmentManager().addOnBackStackChangedListener(new OnBackStackChangedListener() {
 
+	  @Override
+	  public void onBackStackChanged() {
+	    Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+	    if (f != null){
+	      updateTitleAndDrawer (f);
+	    }
+
+	  }
+	});
+    }
+
+    public void updateTitleAndDrawer (Fragment fragment){
+	  String fragClassName = fragment.getClass().getName();
+
+	  if (fragClassName.equals(A.class.getName())){
+	    setTitle ("A");
+	    //set selected item position, etc
+	  }
+	  else if (fragClassName.equals(B.class.getName())){
+	    setTitle ("B");
+	    //set selected item position, etc
+	  }
+	}
 
  ***************************************************************************************************
 	Upload Image in multiparts
