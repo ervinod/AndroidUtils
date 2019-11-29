@@ -2347,7 +2347,7 @@ shared project on GitHub". Click on the link provided in that message to go to G
 
     public static void attachFragment ( int fragmentHolderLayoutId, Fragment fragment, Context context) {
 
-	String tag fragment.getClass().getSimpleName();
+	String tag = fragment.getClass().getSimpleName();
 	FragmentManager manager = ( (AppCompatActivity) context ).getSupportFragmentManager ();
 	FragmentTransaction ft = manager.beginTransaction ();
 
