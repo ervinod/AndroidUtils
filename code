@@ -3316,3 +3316,57 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 		    android:textSize="@dimen/_12sdp"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:justificationMode="inter_word"/>
+
+
+****************************************************************************************************
+    16:9 Costraint Layout
+****************************************************************************************************
+
+	<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	    <ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:src="@drawable/top_image"
+		app:layout_constraintDimensionRatio="16:9"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"/>
+
+	</android.support.constraint.ConstraintLayout>
+	
+	
+****************************************************************************************************
+    Show shadow behind any layout
+****************************************************************************************************
+	
+  Create new drawable resource file inside res/drawable
+  
+  <?xml version="1.0" encoding="utf-8"?>
+  <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#CABBBBBB"/>
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <item
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white"/>
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</layer-list>
+  
+  
+  
+  
+  
