@@ -3483,6 +3483,75 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 
     }
 
+	
+****************************************************************************************************
+    text to speech conversation with male and female voice option
+****************************************************************************************************
     
-  
+  	TextToSpeech textToSpeech = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+                    if(SessionManager.getInstance(activity).getVoice()==1){
+                        Voice v= null;
+                        Set<String> a=new HashSet<>();
+                        a.add("male"); to select male voice.
+                        v = new Voice("en-us-x-sfg#male_1-local",new Locale("en","US"),400,200,true,a);
+                        textToSpeech.setVoice(v);
+                    }else if(SessionManager.getInstance(activity).getVoice()==2){
+                        Voice v= null;
+                        Set<String> a=new HashSet<>();
+                        a.add("female");//to select female voice.
+                        v = new Voice("en-us-x-sfg#female_1-local",new Locale("en","US"),400,200,true,a);
+                        textToSpeech.setVoice(v);
+                    }
+
+                }
+
+                if (status==TextToSpeech.SUCCESS){
+
+
+                    textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                        @Override
+                        public void onStart(String utteranceId) {
+                            Log.i("TextToSpeech","On Start");
+                        }
+
+                        @Override
+                        public void onDone(String utteranceId) {
+                            Log.i("TextToSpeech","On Done");
+                            isPlayingAudio = false;
+                        }
+
+                        @Override
+                        public void onError(String utteranceId) {
+                            Log.i("TextToSpeech","On Error");
+                        }
+                    });
+
+                }else {
+                    Log.i("TextToSpeech","Initialization Failed");
+                }
+
+            }
+        });
+	
+     private  void startTextReading(int position){
+        String toSpeak = "Hello this is example of text to speech conversion";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak(toSpeak,TextToSpeech.QUEUE_FLUSH,null,TextToSpeech.ACTION_TTS_QUEUE_PROCESSING_COMPLETED);
+        }
+
+     }
+
+    private void stopTextReading(){
+        if(textToSpeech !=null){
+            textToSpeech.stop();
+        }
+    }
+
   
