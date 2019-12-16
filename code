@@ -3553,5 +3553,18 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
             textToSpeech.stop();
         }
     }
+    
+    
+****************************************************************************************************
+    ubuntu android studio grant current user access to /dev/kvm
+****************************************************************************************************
+
+	execute following commands in treminal
+	sudo apt-get install qemu-kvm
+
+    	// type your password
+
+   	sudo chmod 777 -R /dev/kvm
+	
 
   
