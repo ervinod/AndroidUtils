@@ -3566,5 +3566,41 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 
    	sudo chmod 777 -R /dev/kvm
 	
+****************************************************************************************************
+    send arraylist from one fragment to another
+****************************************************************************************************
+	1. implements your model class with Serializable
+	
+	2. Add code while launching fragment
+	Bundle bundle = new Bundle();
+        if(allLocationResponseList!=null){
+            bundle.putSerializable("location_list", (Serializable) allLocationResponseList);
 
+        }
+        addFragment(AllServerLocation.newInstance(bundle));
+	
+	3. create new method in fragment that return instance of reqired fragment
+	public static AllServerLocation newInstance(Bundle args){
+	     AllServerLocation fragment = new AllServerLocation();
+	     fragment.setArguments(args);
+	     return  fragment;
+
+       }
+       
+       ///// or ////////  
+       Fragment fragment = new fragment();
+       Bundle bundle = new Bundle();
+   
+        //put your ArrayList data in bundle 
+        bundle.putSerializable("bundle_key",new ConnResp(mlist).getmlist());
+        fragment.setArguments(announcementBundle); 
+	FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.comments_fragment, fragment);
+        ft.commit();
+	
+	
+	4. Get data in onCreateView of fragment
+	if(getArguments()!=null){
+             allLocationResponseList = (ArrayList<AllLocationResponse>) getArguments().getSerializable("location_list");
+        }
   
