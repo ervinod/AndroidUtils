@@ -3646,3 +3646,29 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
         PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
         String version = info.versionName;
         tvVersion.setText(String.format("%s %s", "Current Version", version));
+	
+	
+****************************************************************************************************
+    Collapse group in ExpandableListView
+*****************************************************************************************************
+	
+    public class YourExapandableAdapter extends BaseExpandableListAdapter {
+
+    private Context mContext;
+    ExpandableListView mExpandableListView;
+    int mLastExpandedGroupPosition = -1;
+
+    public YourExapandableAdapter(Context context, ExpandableListView expandableListView) {
+            mContext = context;
+            mExpandableListView = expandableListView;
+    }
+
+    @Override
+    public void onGroupExpanded(int groupPosition) {
+        super.onGroupExpanded(groupPosition);
+        if(groupPosition != mLastExpandedGroupPosition){
+                mExpandableListView.collapseGroup(mLastExpandedGroupPosition);
+        }
+
+        mLastExpandedGroupPosition = groupPosition;
+    }
