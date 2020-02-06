@@ -3672,3 +3672,41 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 
         mLastExpandedGroupPosition = groupPosition;
     }
+
+****************************************************************************************************
+    Make some part of text clickable / spannable text/ span
+*****************************************************************************************************
+
+	SpannableString SpanString = new SpannableString("Try Alternate Bolling Methods Here");
+
+        ClickableSpan teremsAndCondition = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                //Handle click here
+            }
+        };
+
+        SpanString.setSpan(teremsAndCondition, 30, 34, 0);
+        SpanString.setSpan(new ForegroundColorSpan(Color.BLACK), 30, 34, 0);
+        SpanString.setSpan(new StyleSpan(Typeface.BOLD), 30, 34, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvAlternateMethod.setMovementMethod(LinkMovementMethod.getInstance());
+        tvAlternateMethod.setSelected(true);
+        tvAlternateMethod.setText(SpanString);
+
+
+	//If you dont want underline below clickable text
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                AppUtil.openAltarnetPaymentMethod(getBaseActivity());
+            }
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                ds.setUnderlineText(false);    // this line removes underline
+            }
+
+        };
+        tvAlternateMethod.setMovementMethod(LinkMovementMethod.getInstance());
+        SpanString.setSpan(clickableSpan,30, 34, 0);
+        SpanString.setSpan(new StyleSpan(Typeface.BOLD), 30, 34, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvAlternateMethod.setText(SpanString);
