@@ -3805,3 +3805,10 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
                 Toast.makeText(activity, "SWIPE_BOTTOM", Toast.LENGTH_SHORT).show();
             }
         });
+
+****************************************************************************************************
+    UPI Payment SDK
+*****************************************************************************************************
+
+	https://github.com/PatilShreyas/EasyUpiPayment-Android
+
