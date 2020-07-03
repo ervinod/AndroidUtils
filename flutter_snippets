@@ -1,0 +1,19 @@
+Set alignment of Widgets
+
+Center vertically
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: <Widget>[ ... ],
+)
+Center horizontally
+Column(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: <Widget>[ ... ],
+)
+But if the column is hugging its content then just wrap it in a Center widget
+
+Center(
+  child: Column(
+    children: <Widget>[ ... ],
+  ),
+)
