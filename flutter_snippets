@@ -1,4 +1,7 @@
-Set alignment of Widgets
+
+=================================================================================================
+  Set alignment of Widgets
+=================================================================================================
 
 Center vertically
 Column(
@@ -17,3 +20,22 @@ Center(
     children: <Widget>[ ... ],
   ),
 )
+
+=================================================================================================
+  Change Flutter App Name
+=================================================================================================
+
+Android
+Open AndroidManifest.xml (located at android/app/src/main)
+
+<application
+    android:label="App Name" ...> // Your app name here
+iOS
+Open info.plist (located at ios/Runner)
+
+<key>CFBundleName</key>
+<string>App Name</string> // Your app name here
+
+Don't forget to run
+flutter clean
+
