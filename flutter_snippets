@@ -39,3 +39,15 @@ Open info.plist (located at ios/Runner)
 Don't forget to run
 flutter clean
 
+
+=================================================================================================
+  Add delay
+=================================================================================================
+
+new Future.delayed(const Duration(seconds: 1)); //recommend
+
+new Timer(const Duration(seconds: 1), ()=>print("1 second later."));
+
+sleep(const Duration(seconds: 1)); //import 'dart:io';
+
+new Stream.periodic(const Duration(seconds: 1), (_) => print("1 second later.")).first.then((_)=>print("Also 1 second later."));
