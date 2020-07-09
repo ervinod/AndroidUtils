@@ -88,3 +88,7 @@ new Stream.periodic(const Duration(seconds: 1), (_) => print("1 second later."))
 =================================================================================================
   
   https://stackoverflow.com/a/58691020
+  
+  
+ show hide widget on UI using Bloc
+ https://stackoverflow.com/a/55594815
