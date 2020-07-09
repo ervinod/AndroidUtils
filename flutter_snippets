@@ -82,3 +82,9 @@ new Stream.periodic(const Duration(seconds: 1), (_) => print("1 second later."))
     );
   }
 
+
+=================================================================================================
+  Change button color if text entered in textfield is valid
+=================================================================================================
+  
+  https://stackoverflow.com/a/58691020
