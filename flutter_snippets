@@ -146,3 +146,35 @@ static Future<List<String>> getDeviceDetails() async {
 //if (!mounted) return;
 return [deviceName, deviceVersion, identifier];
 }
+
+=================================================================================================
+  Make specific parts of a text clickable (spannable/ rich text)
+=================================================================================================
+
+Widget build(BuildContext context) {
+    TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
+    TextStyle linkStyle = TextStyle(color: Colors.blue);
+    return RichText(
+      text: TextSpan(
+        style: defaultStyle,
+        children: <TextSpan>[
+          TextSpan(text: 'By clicking Sign Up, you agree to our '),
+          TextSpan(
+              text: 'Terms of Service',
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  print('Terms of Service"');
+                }),
+          TextSpan(text: ' and that you have read our '),
+          TextSpan(
+              text: 'Privacy Policy',
+              style: linkStyle,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  print('Privacy Policy"');
+                }),
+        ],
+      ),
+    );
+  }
