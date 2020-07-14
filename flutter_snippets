@@ -92,3 +92,30 @@ new Stream.periodic(const Duration(seconds: 1), (_) => print("1 second later."))
   
  show hide widget on UI using Bloc
  https://stackoverflow.com/a/55594815
+
+
+=================================================================================================
+  Change button color if text entered in textfield is valid
+=================================================================================================
+
+1. In your pubspec.yaml file add this:
+
+dependencies:
+  device_info: ^0.4.0+4
+
+2. Create a method:
+
+Future<String> _getId() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  if (Theme.of(context).platform == TargetPlatform.iOS) {
+    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+  } else {
+    AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+    return androidDeviceInfo.androidId; // unique ID on Android
+  }
+}
+
+3. Use it like:
+
+String deviceId = await _getId();
