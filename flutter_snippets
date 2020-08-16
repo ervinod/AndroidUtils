@@ -178,3 +178,29 @@ Widget build(BuildContext context) {
       ),
     );
   }
+  
+=================================================================================================
+  Password TextField toggle
+=================================================================================================
+  1. Declase boolean variable to keep track of visibility
+  bool _obscurePassword = true;
+  
+  2. Write function to toggle boolean variable
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscurePassword = !_obscurePassword;
+    });
+  }
+  
+  3. Configure TextFormField widget
+  
+  TextFormField(
+      obscureText: _obscurePassword,
+      decoration: InputDecoration(
+        hintText: "Enter your password",
+          suffixIcon: IconButton(
+            onPressed: () => _togglePasswordVisibility(),
+            icon: Icon(Icons.remove_red_eye,  color: this._obscurePassword ? Colors.blue : Colors.grey,),
+          ),
+      ),
+    )
