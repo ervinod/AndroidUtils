@@ -3829,3 +3829,21 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 ****************************************************************************************************
 	
 	https://www.yopmail.com
+
+****************************************************************************************************
+    NDK error solution
+****************************************************************************************************
+	
+	if getting ndk version related error while building apk
+	
+	change project level gradle version to
+	classpath 'com.android.tools.build:gradle:3.5.0'
+	
+	or make following changes in local.properties file
+	
+	**** on windows ****
+	ndk.dir=C\:\\Users\\Nagesh\\AppData\\Local\\Android\\Sdk\\ndk\\21.2.6472646
+	sdk.dir=C\:\\Users\\Nagesh\\AppData\\Local\\Android\\Sdk
+
+	**** on mac ****
+	
