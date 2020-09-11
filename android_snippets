@@ -3846,4 +3846,7 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 	sdk.dir=C\:\\Users\\Nagesh\\AppData\\Local\\Android\\Sdk
 
 	**** on mac ****
+	sdk.dir=/Users/ervinod/Library/Android/sdk
+	flutter.sdk=/Users/ervinod/Documents/flutter
+	ndk.dir=/Users/ervinod/Library/Android/sdk/ndk/21.3.6528147
 	
