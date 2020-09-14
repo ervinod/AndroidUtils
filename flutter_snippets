@@ -204,3 +204,12 @@ Widget build(BuildContext context) {
           ),
       ),
     )
+    
+=================================================================================================
+  build production/release apk for flutter project
+=================================================================================================
+
+  1. create key.properties file and modify build.gradle file according to below link
+    https://flutter.dev/docs/deployment/android
+  2. use below command to build release apk
+    flutter build apk --release
