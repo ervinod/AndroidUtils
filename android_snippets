@@ -3844,9 +3844,19 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 	**** on windows ****
 	ndk.dir=C\:\\Users\\Nagesh\\AppData\\Local\\Android\\Sdk\\ndk\\21.2.6472646
 	sdk.dir=C\:\\Users\\Nagesh\\AppData\\Local\\Android\\Sdk
+	
 
 	**** on mac ****
 	sdk.dir=/Users/ervinod/Library/Android/sdk
 	flutter.sdk=/Users/ervinod/Documents/flutter
 	ndk.dir=/Users/ervinod/Library/Android/sdk/ndk/21.3.6528147
+	
+	
+****************************************************************************************************
+    Get file name from url
+****************************************************************************************************
+
+	URI uri = new URI("https://mindorks.s3.ap-south-1.amazonaws.com/courses/MindOrks_Android_Online_Professional_Course-Syllabus.pdf");
+        String pdf_name = new File(uri.getPath()).getName();
+        Toast.makeText(this, ""+pdf_name, Toast.LENGTH_SHORT).show();
 	
