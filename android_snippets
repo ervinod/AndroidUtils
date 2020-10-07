@@ -3860,3 +3860,18 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
         String pdf_name = new File(uri.getPath()).getName();
         Toast.makeText(this, ""+pdf_name, Toast.LENGTH_SHORT).show();
 	
+	
+****************************************************************************************************
+    convert date string
+****************************************************************************************************
+	public String getDateTimeFromTimeStamp(String mDate) {
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+        Date date = null;
+        try {
+            date = originalFormat.parse(mDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return targetFormat.format(date);
+    }
