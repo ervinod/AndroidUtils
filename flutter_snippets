@@ -213,3 +213,29 @@ Widget build(BuildContext context) {
     https://flutter.dev/docs/deployment/android
   2. use below command to build release apk
     flutter build apk --release
+    
+=================================================================================================
+  call post api as raw request body
+=================================================================================================    
+    
+    
+    Map data = {
+      'mobile_no': mobile_no,
+      'otp': enteredOTP,
+    };
+
+    //encode Map to JSON
+    var requestBody = json.encode(data);
+
+    debugPrint(requestBody);
+
+ 
+      if(response.statusCode==200){
+        // api success 
+        Map<String , dynamic> jsonResopnse = json.decode(response.body);
+        http.Response response = await http.post(ApiConstants.VERIFYOTP, body: requestBody);
+       
+      }else {
+        // api error
+      }
+      
