@@ -279,3 +279,18 @@ Widget build(BuildContext context) {
       }
     }
 
+=================================================================================================
+  Get today's formated date
+=================================================================================================    
+  
+  DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+
+    final customDateFormat = new DateFormat('yyyy-MM-dd');
+    var mDate = customDateFormat.format(date);
+    
+
+
+
+
+
