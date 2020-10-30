@@ -282,6 +282,7 @@ Widget build(BuildContext context) {
 =================================================================================================
   Get today's formated date
 =================================================================================================    
+  import 'package:intl/intl.dart';
   
   DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
