@@ -288,8 +288,23 @@ Widget build(BuildContext context) {
 
     final customDateFormat = new DateFormat('yyyy-MM-dd');
     var mDate = customDateFormat.format(date);
-    
+   
+   
+=================================================================================================
+  Parse JSON Object
+=================================================================================================    
+  
+  List<dynamic> _declarationList = [];
 
+
+  var userDetails = _declarationList[index]["user_details"];
+  var user_name = userDetails["name"];
+  
+  var userDetails = json.decode(_declarationList[index]["user_details"]);
+  var user_name = userDetails["name"];
+  
+  Map<String, dynamic> userDetails = json.decode(optionArray);
+  var user_name = userDetails["name"];
 
 
 
