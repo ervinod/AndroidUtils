@@ -3862,7 +3862,7 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 	
 	
 ****************************************************************************************************
-    convert date string
+    Convert date string
 ****************************************************************************************************
 	public String getDateTimeFromTimeStamp(String mDate) {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -3874,4 +3874,34 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
             e.printStackTrace();
         }
         return targetFormat.format(date);
+    }
+    
+****************************************************************************************************
+    Create signin config for release build
+****************************************************************************************************    
+    
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+    
+    signingConfigs {
+        release {
+            //storeFile file('justcallpuneplus.jks')// put keystore in app dir
+            storeFile rootProject.file('justcall_puneplus.jks')//put keystore in root dir
+            storePassword '123456'
+            keyPassword '123456'
+            keyAlias 'key0'
+        }
+    }
+    
+    defaultConfig {
+        applicationId "com.app.justcallpune"
+	...
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
     }
