@@ -3905,3 +3905,14 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
             signingConfig signingConfigs.release
         }
     }
+    
+    
+****************************************************************************************************
+    Get Place Image from place photo reference (Google Place API)
+****************************************************************************************************
+
+	Note:use key "photo_reference"
+    	https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=place_photo_reference&sensor=false&key=GoogleMapAPIKeyHere
+    
+    
+    
