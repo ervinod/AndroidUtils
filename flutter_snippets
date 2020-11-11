@@ -351,7 +351,7 @@ Widget build(BuildContext context) {
   
   2. create timer
   Timer _timer;
-  StreamController<int> _controller;//state level declaration
+  StreamController<int> _events;//state level declaration
   
   void _startTimer() {
     _counter = 5;
