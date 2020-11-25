@@ -291,6 +291,19 @@ Widget build(BuildContext context) {
     var mDate = customDateFormat.format(date);
    
    
+   String getFormattedDate(String dateString){
+    try{
+      DateTime now = DateTime.parse(dateString);
+      //String mDate = DateFormat().addPattern("yyyy-MM-dd HH:mm:ss").format(now);
+      String mDate = DateFormat().addPattern("dd-MM-yyyy").format(now);
+      //final customDateFormat = new DateFormat('dd-MM-yyyy');
+      //var mDate = customDateFormat.format(now);
+      return mDate.toString();
+    }catch(_){
+        return dateString;
+    }
+  }
+   
 =================================================================================================
   Parse JSON Object
 =================================================================================================    
