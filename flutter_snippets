@@ -521,6 +521,112 @@ Widget build(BuildContext context) {
   _startTimer();//to start timer
   showAlert(context);//to show dialog
 
+
+=================================================================================================
+  Lock Screen Rotation of entire app
+=================================================================================================
+
+  1. Create following mixin PortraitModeMixin.dart file
+  
+  import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+/// Forces portrait-only mode application-wide
+/// Use this Mixin on the main app widget i.e. app.dart
+/// Flutter's 'App' has to extend Stateless widget.
+///
+/// Call `super.build(context)` in the main build() method
+/// to enable portrait only mode
+mixin PortraitModeMixin on StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    _portraitModeOnly();
+    return null;
+  }
+}
+
+/// Forces portrait-only mode on a specific screen
+/// Use this Mixin in the specific screen you want to
+/// block to portrait only mode.
+///
+/// Call `super.build(context)` in the State's build() method
+/// and `super.dispose();` in the State's dispose() method
+mixin PortraitStatefulModeMixin<T extends StatefulWidget> on State<T> {
+  @override
+  Widget build(BuildContext context) {
+    _portraitModeOnly();
+    return null;
+  }
+
+  @override
+  void dispose() {
+    _enableRotation();
+  }
+}
+
+/// blocks rotation; sets orientation to: portrait
+void _portraitModeOnly() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+}
+
+void _enableRotation() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+}
+
+2. Use this mixin in main.dart file
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget with PortraitModeMixin{
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);//important
+    return MaterialApp(
+      title: "Demo App",
+      debugShowCheckedModeBanner: false,
+      initialRoute: SplashScreen.routeName,
+      routes: routes,
+    );
+  }
+}
+  
+  To block rotation in a specific screen implement PortraitStatefulModeMixin<SampleScreen> in 
+  the specific screen's state. Remember to call super.build(context) in the State's build() method 
+  and super.dispose() in dispose() method. If your screen is a StatelessWidget - simply repeat the 
+  App's solution (previous example) i.e. use PortraitModeMixin.
+  
+  /// Specific screen
+class SampleScreen extends StatefulWidget {
+  SampleScreen() : super();
+
+  @override
+  State<StatefulWidget> createState() => _SampleScreenState();
+}
+
+class _SampleScreenState extends State<SampleScreen>
+    with PortraitStatefulModeMixin<SampleScreen> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Text("Flutter - Block screen rotation example");
+  }
+
+  @override
+  void dispose() {
+     super.dispose();
+  }
+}
+  
   
   
 
