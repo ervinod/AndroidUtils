@@ -3913,6 +3913,39 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 
 	Note:use key "photo_reference"
     	https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=place_photo_reference&sensor=false&key=GoogleMapAPIKeyHere
+	
+	
+****************************************************************************************************
+    Get Directory Listing on External Storage
+****************************************************************************************************
     
+    //add permission in manifest
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     
-    
+    private void getDirectoryList() {
+        //String path= Environment.getExternalStorageDirectory().getAbsolutePath();
+        String path= Environment.getExternalStorageDirectory().getAbsolutePath()+"/MyDoc/folder/";
+        File mFile = new File(path);
+        File[] files = mFile.listFiles();
+        for (File inFile : files) {
+            if (inFile.isDirectory()) {
+                // is directory
+                Log.d("DIRECTORY : ", inFile.getName());
+            }else{
+                // is file
+                Log.d("FILE : ", inFile.getName());
+            }
+        }
+
+    }
+    private void getFileList() {
+        String path= Environment.getExternalStorageDirectory().getAbsolutePath();
+        File f = new File(path);//converted string object to file
+        String[] dirList = f.list();//getting the list of files in string array
+        Log.d("FILES FOUND:", String.valueOf(dirList.length));
+
+        for(String fileName:dirList)
+            Log.d("FILE : ", fileName);
+
+    }
