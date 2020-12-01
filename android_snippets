@@ -3949,3 +3949,96 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
             Log.d("FILE : ", fileName);
 
     }
+    
+    
+****************************************************************************************************
+    Get Last Modified Directory or File
+****************************************************************************************************
+
+    // get last modified file
+    File lastModifiedDirectory = getLastModifiedDirectory(Environment.getExternalStorageDirectory().getPath().toString());
+    //if you want to get file from specific directory
+    //File lastModifiedFile = getLastModifiedFile(Environment.getExternalStorageDirectory().getPath().toString() + "/DCIM");
+    File lastModifiedFile = getLastModifiedFile(lastModifiedDirectory.getPath());
+			
+`   public File getLastModifiedFile(String directoryFilePath){
+        File directory = new File(directoryFilePath);
+        File[] files = directory.listFiles(File::isFile);
+        long lastModifiedTime = Long.MIN_VALUE;
+        File chosenFile = null;
+
+        if (files != null)
+        {
+            for (File file : files)
+            {
+                if (file.lastModified() > lastModifiedTime)
+                {
+                    chosenFile = file;
+                    lastModifiedTime = file.lastModified();
+                }
+            }
+        }
+
+        return chosenFile;
+    }
+
+
+    public File getLastModifiedDirectory(String directoryFilePath){
+        ArrayList<File> fileList = new ArrayList<File>();
+
+        File directory = new File(directoryFilePath);
+        File[] files = directory.listFiles(File::isFile);
+        long lastModifiedTime = Long.MIN_VALUE;
+        File chosenFile = null;
+
+        File listFile[] = directory.listFiles();
+
+        for (File aListFile : listFile) {
+
+            if (aListFile.isDirectory()) {
+                fileList.add(aListFile);
+
+                File NestedListFile[] = aListFile.listFiles();
+                for (File bListFile : NestedListFile) {
+
+                    if (bListFile.isDirectory()) {
+                        fileList.add(bListFile);
+
+                        File DoubleNestedListFile[] = bListFile.listFiles();
+                        for (File cListFile : DoubleNestedListFile) {
+
+                            if (cListFile.isDirectory()) {
+                                fileList.add(cListFile);
+
+                                File TripleNestedListFile[] = cListFile.listFiles();
+                                for (File dListFile : TripleNestedListFile) {
+
+                                    if (dListFile.isDirectory()) {
+                                        fileList.add(dListFile);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+        if (fileList != null)
+        {
+            for (File file : fileList)
+            {
+                if (file.lastModified() > lastModifiedTime)
+                {
+                    chosenFile = file;
+                    lastModifiedTime = file.lastModified();
+                }
+            }
+        }
+
+        return chosenFile;
+    }
+
+
