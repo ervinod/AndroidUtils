@@ -4078,4 +4078,36 @@ FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( SplashAct
 
 	<color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 	
+****************************************************************************************************
+    Prevent spinner onitemselected calls during initialization
+****************************************************************************************************
 	
+Beginning with API level 3 you can use onUserInteraction() on an Activity with a boolean to determine if the user is interacting with the device.
+
+private boolean userIsInteracting;
+private mSpinner;
+ 
+In activity override below method
+
+@Override
+public void onUserInteraction() {
+     super.onUserInteraction();
+     userIsInteracting = true;
+}
+
+      mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+           @Override
+           public void onItemSelected(AdapterView<?> arg0, View view, int position, long arg3) {
+               
+                if (userIsInteracting) {
+                     //Your code goes here
+                }
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> arg0) {
+
+           }
+      });
+As you c
