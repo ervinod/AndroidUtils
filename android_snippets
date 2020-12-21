@@ -4095,6 +4095,8 @@ public void onUserInteraction() {
      userIsInteracting = true;
 }
 
+Add listener to spinner
+
       mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
            @Override
@@ -4110,4 +4112,15 @@ public void onUserInteraction() {
 
            }
       });
-As you c
+      
+      
+****************************************************************************************************
+    Decompile and recompile apk
+****************************************************************************************************
+      
+      1. download apktoo for your platform
+      https://ibotpeaches.github.io/Apktool/install/
+      
+      2. reffer below article for procedure
+      https://medium.com/@_sathishshan/decompile-and-recompile-android-apk-7d375e1bca83
+      
