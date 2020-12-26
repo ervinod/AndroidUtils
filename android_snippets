@@ -4124,3 +4124,44 @@ Add listener to spinner
       2. reffer below article for procedure
       https://medium.com/@_sathishshan/decompile-and-recompile-android-apk-7d375e1bca83
       
+      
+****************************************************************************************************
+    Save arrayList in SharedPreferences
+****************************************************************************************************
+	
+	1. Create Utility functions to save and retrieve list
+	
+	public static void saveOfflineCityList(Context context, List<City> cityList) {
+		SharedPreferences mPrefs = context.getSharedPreferences(Config.SHARED_PREF, context.MODE_PRIVATE);
+		SharedPreferences.Editor prefsEditor = mPrefs.edit();
+		Gson gson = new Gson();
+		String json = gson.toJson(cityList);
+		prefsEditor.putString("cities", json);
+		prefsEditor.commit();
+	    }
+
+
+	    public static List<City> loadOfflineCityList(Context context) {
+		List<City> cityList = new ArrayList<City>();
+		SharedPreferences mPrefs = context.getSharedPreferences(Config.SHARED_PREF, context.MODE_PRIVATE);
+		Gson gson = new Gson();
+		String json = mPrefs.getString("cities", "");
+		if (json.isEmpty()) {
+		    cityList = new ArrayList<City>();
+		} else {
+		    Type type = new TypeToken<List<City>>() {
+		    }.getType();
+		    cityList = gson.fromJson(json, type);
+		}
+		return cityList;
+	    }
+	
+	2. Save arraylist by calling function
+		saveOfflineCityList(MainActivity.this, cityList);
+	
+	3. Get arrayList from shared preferences
+	
+		ArrayList<City> cityList = Helper.loadOfflineCityList(MainActivity.this);
+	
+	
+      
