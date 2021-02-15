@@ -655,6 +655,22 @@ class _SampleScreenState extends State<SampleScreen>
 }
   
   
+=================================================================================================
+ Configure ImagePicker plugin for iOS build
+=================================================================================================
+
+  add below lines in end of info.plist file (i.e. just above tag </dict>)
+  //file location - <project root>/ios/Runner/Info.plist
+
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Need to upload image</string>
+  <key>NSCameraUsageDescription</key>
+  <string>Need to upload image</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>Need to upload image</string>
+  
+  
+
   
 
 
