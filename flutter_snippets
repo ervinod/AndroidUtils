@@ -1,5 +1,32 @@
 
 =================================================================================================
+  Install flutter
+=================================================================================================
+  1. Follow step 1 to 3 from below link
+    https://flutter.dev/docs/get-started/install/macos
+    
+  2. Run command flutter in terminal it will download dart sdk
+  
+  3. Update the environment path.
+
+    Open terminal.
+
+    vim $HOME/.zshrc
+
+    Press "I" key for going to insert mode.
+
+    add the following line in the opened file:
+
+    export PATH="$PATH:/YOUR_FLUTTER_DIR/flutter/bin"
+
+    Press "Esc" then write :wq! in terminal and press enter to exit vim.
+
+    Reopen the terminal and check "flutter doctor"
+    
+    if flutter doctor is showing any then its also shows command to solve that issue
+    
+    
+=================================================================================================
   Set alignment of Widgets
 =================================================================================================
 
