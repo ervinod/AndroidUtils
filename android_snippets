@@ -4163,5 +4163,19 @@ Add listener to spinner
 	
 		ArrayList<City> cityList = Helper.loadOfflineCityList(MainActivity.this);
 	
-	
+****************************************************************************************************
+    Generate SHA key
+****************************************************************************************************
+
+	Step 1: Go to this folder
+
+	On Mac: /Users/<username>/.android/
+
+	On Windows: C:\Documents and Settings\<username>\.android\
+
+	On Linux: ~/.android/
+	Step 2: Run this command line:
+
+	keytool -list -v -keystore debug.keystore -storepass android
+	You will see the SHA-1 key.
       
