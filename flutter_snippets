@@ -669,8 +669,16 @@ class _SampleScreenState extends State<SampleScreen>
   <key>NSMicrophoneUsageDescription</key>
   <string>Need to upload image</string>
   
-  
+=================================================================================================
+ NDK version issue solution
+=================================================================================================
 
+  Error: No version of NDK matched the requested version 20.0.5594570. Versions available locally: 21.0.6113669
   
+  Step 1. Upgrade gradle plugin version - android -> build.gradle
+          classpath 'com.android.tools.build:gradle:4.1.2'
+  Step 2. Change gradle distribution url - android->gradle->wrapper->gradle-wrapper.properties
+          distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip
+  Step 3. Clean , pub get and run
 
 
