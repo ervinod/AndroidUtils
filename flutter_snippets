@@ -680,5 +680,15 @@ class _SampleScreenState extends State<SampleScreen>
   Step 2. Change gradle distribution url - android->gradle->wrapper->gradle-wrapper.properties
           distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip
   Step 3. Clean , pub get and run
+  
+=================================================================================================
+ Trim String
+=================================================================================================
+  
+  String link = 'http://sales.local/api/v1/payments/454/ticket/verify?token=jhvycygvjhbknm.eyJpc3MiOiJodH';
+  String delimiter = '/ticket';
+  int lastIndex = link.indexOf(delimiter);
+  String trimmed = link.substring(0,lastIndex);
+  print(trimmed);
 
 
