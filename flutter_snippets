@@ -679,7 +679,8 @@ class _SampleScreenState extends State<SampleScreen>
           classpath 'com.android.tools.build:gradle:4.1.2'
   Step 2. Change gradle distribution url - android->gradle->wrapper->gradle-wrapper.properties
           distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip
-  Step 3. Clean , pub get and run
+  Step 3. Remove NDK path from local.properties
+  Step 4. Clean , pub get and run
   
 =================================================================================================
  Trim String
