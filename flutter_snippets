@@ -693,3 +693,84 @@ class _SampleScreenState extends State<SampleScreen>
   print(trimmed);
 
 
+=================================================================================================
+ Get remaining time by comparing 2 dates
+=================================================================================================
+
+String _getRemainingTime(Duration duration) {
+  //if you want like 02 hours instead of 2 hours
+  //String twoDigits(int n) => n.toString().padLeft(2, "0");
+  /*String twoDigits(int n) => n.toString();
+  String twoDigitDays = twoDigits(duration.inDays.remainder(7));
+  String twoDigitHours = twoDigits(duration.inHours.remainder(24));
+  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));*/
+
+
+  int twoDigits(int n) => n;
+  int daysRemain = twoDigits(duration.inDays.remainder(7));
+  int hoursRemain = twoDigits(duration.inHours.remainder(24));
+  int minutesRemain = twoDigits(duration.inMinutes.remainder(60));
+  int secondsRemain = twoDigits(duration.inSeconds.remainder(60));
+
+  if(daysRemain==0){
+    return "$hoursRemain Hours left";
+  }
+  if(daysRemain>0){
+    return "$daysRemain Days $hoursRemain hours left";
+  }
+
+  if(daysRemain==0 && hoursRemain==0 ){
+    return 'Less than a hour left';
+  }
+  return "$daysRemain Days $hoursRemain hours left";
+}
+
+
+=================================================================================================
+ Get ago time by comparing 2 dates
+=================================================================================================
+
+  static String timeAgo(DateTime date, {bool numericDates = true}) {
+    if (date == null) return "";
+
+    final date2 = DateTime.now();
+    final difference = date2.difference(date);
+//    print('day dff : ${difference.inDays}');
+
+    if (difference.inSeconds < 2) {
+      return 'Just now';
+    } else if (difference.inSeconds <= 59) {
+      return '${difference.inSeconds} Sec ago';
+    } else if (difference.inMinutes <= 1) {
+      return numericDates ? '1 Min ago' : 'A min ago';
+    } else if (difference.inMinutes <= 59) {
+      return '${difference.inMinutes} Min ago';
+    } else if (difference.inHours == 1) {
+      return numericDates ? '1 Hr ago' : 'An Hr ago';
+    } else if (difference.inHours <= 24) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inDays <= 1) {
+      return numericDates ? '1d ago' : 'Yesterday';
+    } else if (difference.inDays <= 6) {
+      return '${difference.inDays}d ago';
+    } else if ((difference.inDays / 7).floor() <= 1) {
+      return numericDates ? '1 week ago' : 'Last week';
+    } else if ((difference.inDays / 7).floor() <= 4) {
+      return '${(difference.inDays / 7).floor()} weeks ago';
+    } else if ((difference.inDays / 30).floor() <= 1) {
+      return numericDates ? '1 month ago' : 'Last month';
+    } else if ((difference.inDays / 30).floor() <= 11) {
+      return '${(difference.inDays / 30).floor()} months ago';
+    } else if ((difference.inDays / 365).floor() <= 1) {
+      return numericDates ? '1 yr ago' : 'Last year';
+    } else {
+      return '${(difference.inDays / 365).floor()} years ago';
+    }
+  }
+
+
+
+
+
+
