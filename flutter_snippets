@@ -682,6 +682,11 @@ class _SampleScreenState extends State<SampleScreen>
   Step 3. Remove NDK path from local.properties
   Step 4. Clean , pub get and run
   
+  or you can explictly set ndk version in build.gradle
+      android {
+        compileSdkVersion 29
+        ndkVersion "21.0.6113669"
+  
 =================================================================================================
  Trim String
 =================================================================================================
