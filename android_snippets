@@ -1541,6 +1541,17 @@
 			
 			Bundle bundleObject = getIntent().getExtras();
 			quiz_list = (ArrayList<QuizModel>) bundleObject.getSerializable("RESULT_MODEL");
+			
+
+**************************************************************************************
+	Send  of Model class to next Activity
+**************************************************************************************
+	1. First implent your Model class to Serializable
+	2. //To pass:
+	intent.putExtra("MODEL", myModel);
+
+	3. // To retrieve object in second Activity
+	myModel = (SaleModel) getIntent().getSerializableExtra("MODEL");
 
 **************************************************************************************
 	Ecommerce app using Firebase
