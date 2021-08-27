@@ -1,4 +1,29 @@
 =============================================================================================
+	Get current date and time
+=============================================================================================
+
+	Date:
+	String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+	
+	Time:
+	String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+
+	Calendar newDate = Calendar.getInstance();
+        newDate.set(year, monthOfYear, dayOfMonth);
+        SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+        final Date mDate = newDate.getTime();
+        String date = sd.format(mDate);
+	
+	
+	public String getDate(long timestampInMilliSeconds){
+        	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        	String formattedDate = dateFormat.format(new Date(timestampInMilliSeconds));
+        	return formattedDate;
+
+    	}
+
+=============================================================================================
 	Check email validaion
 =============================================================================================
   
