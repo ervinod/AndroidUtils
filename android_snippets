@@ -9,10 +9,10 @@
 	String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
 
-	Calendar newDate = Calendar.getInstance();
-        newDate.set(year, monthOfYear, dayOfMonth);
+	Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth);
         SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
-        final Date mDate = newDate.getTime();
+        final Date mDate = calendar.getTime();
         String date = sd.format(mDate);
 	
 	
@@ -22,6 +22,17 @@
         	return formattedDate;
 
     	}
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	Calendar calendar  = Calendar.getInstance();
+        calendar.setTime(sdf.parse("10-12-2021"));
+
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        int seconds = calendar.get(Calendar.SECOND);
 
 =============================================================================================
 	Check email validaion
