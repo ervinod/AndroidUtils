@@ -775,7 +775,22 @@ String _getRemainingTime(Duration duration) {
   }
 
 
+=================================================================================================
+ Get .apk from .aab file
+=================================================================================================
+If you want to install apk from your aab to your device for testing purpose then you need to edit 
+the configuration(app is default) before running it on the connected device.
+or
 
+For Debug apk command,
 
+bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
+For Release apk command,
+
+bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
+--ks=/MyApp/keystore.jks
+--ks-pass=file:/MyApp/keystore.pwd
+--ks-key-alias=MyKeyAlias
+--key-pass=file:/MyApp/key.pwd
 
 
