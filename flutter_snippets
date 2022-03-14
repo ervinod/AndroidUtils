@@ -25,7 +25,14 @@
     
     if flutter doctor is showing any then its also shows command to solve that issue
     
+    ***** alternative  way ***
+    run this command in terminal to find available versions of jdk in your system
+    /usr/libexec/java_home -V | grep jdk
     
+    add jdk version in gradle.properties file
+    org.gradle.java.home=/Users/ervinod/Library/Java/JavaVirtualMachines/corretto-1.8.0_302/Contents/Home
+
+
 =================================================================================================
   Set alignment of Widgets
 =================================================================================================
