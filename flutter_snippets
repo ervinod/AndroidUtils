@@ -811,4 +811,27 @@ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
 --ks-key-alias=MyKeyAlias
 --key-pass=file:/MyApp/key.pwd
 
+=================================================================================================
+ show loader
+=================================================================================================
+
+  void showLoader() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,///dismiss on touch outside loader
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,///to dismiss loader on backbutton key press
+          child: Center(
+            child: SizedBox(
+              width: 30,
+              height: 30,
+              child: CircularProgressIndicator(
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
