@@ -835,3 +835,24 @@ bundletool build-apks --bundle=/MyApp/my_app.aab --output=/MyApp/my_app.apks
     );
   }
 
+=================================================================================================
+ get comma seperated string from List<String>
+=================================================================================================
+
+List cities = ['NY', 'LA', 'Tokyo'];
+String formattedString = getCommaSeparatedString(cities);
+print(formattedString);
+
+String getCommaSeparatedString(List list) {
+  String formattedStr ='';
+  for(var i in list) {
+    formattedStr += '$i, ';
+  }
+  return formattedStr.replaceRange(formattedStr.length -2, formattedStr.length, '');
+}
+
+String getCommaSeparatedString(List<String> arguments) {
+  String str = cities.join(', ');
+  return str;
+}
+
