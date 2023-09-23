@@ -856,3 +856,10 @@ String getCommaSeparatedString(List<String> arguments) {
   return str;
 }
 
+
+=================================================================================================
+ Create keystore for android build
+=================================================================================================
+
+To create Keystore run this command
+keytool -genkey -v -keystore keystore.jsk -storepass android -alias android -keypass android -keyalg RSA -keysize 2048 -validity 10000
