@@ -863,3 +863,34 @@ String getCommaSeparatedString(List<String> arguments) {
 
 To create Keystore run this command
 keytool -genkey -v -keystore keystore.jsk -storepass android -alias android -keypass android -keyalg RSA -keysize 2048 -validity 10000
+
+=================================================================================================
+ Detect left/right swipe on page/widget
+=================================================================================================
+1. wrap widget with GestureDetector
+2. detect swipe in onPanUpdate method
+
+
+                GestureDetector(
+                    onPanUpdate: (details) {
+                      // Swiping in right direction.
+                      if (details.delta.dx > 0) {
+                        EasyDebounce.debounce(
+                          "swipe_backward_debounce",
+                          const Duration(milliseconds: 200),
+                          () {
+                            log("swipe to right, go back");
+                          },
+                        );
+                      } else if (details.delta.dx < 0) {
+                        EasyDebounce.debounce(
+                          "swipe_forward_debounce",
+                          const Duration(milliseconds: 200),
+                          () {
+                            log("swipe to left, go forward");
+                          },
+                        );
+                      }
+                    },
+                    child: Container(),
+                  )
