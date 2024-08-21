@@ -900,10 +900,19 @@ keytool -genkey -v -keystore keystore.jsk -storepass android -alias android -key
  Generate SHA key for flutter project
 =================================================================================================
 
+ *** GUI method ***
+
+  1. Open Project in Android Studio in PROJECT view
+  2. Reveal android folder
+  3. Right click "gradlew" file and select Open in Terminal
+  4. Go to the terminal view and paste: ./gradlew signingReport gradlew signingReport if you're using Unix-based system like Mac or a PowerShell.
+  5. Press enter and scroll to "Variant: release" to get the SHA1 key
+
+
+`*** Terminal method ***
+
   Go to the project folder in the terminal.
 
   Mac keytool -list -v -keystore ./android/debug.keystore -alias androiddebugkey -storepass android -keypass android
-
   Windows keytool -list -v -keystore "\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
-
   Linux keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
