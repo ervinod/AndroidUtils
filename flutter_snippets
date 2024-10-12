@@ -858,13 +858,6 @@ String getCommaSeparatedString(List<String> arguments) {
 
 
 =================================================================================================
- Create keystore for android build
-=================================================================================================
-
-To create Keystore run this command
-keytool -genkey -v -keystore keystore.jsk -storepass android -alias android -keypass android -keyalg RSA -keysize 2048 -validity 10000
-
-=================================================================================================
  Detect left/right swipe on page/widget
 =================================================================================================
 1. wrap widget with GestureDetector
@@ -916,3 +909,99 @@ keytool -genkey -v -keystore keystore.jsk -storepass android -alias android -key
   Mac keytool -list -v -keystore ./android/debug.keystore -alias androiddebugkey -storepass android -keypass android
   Windows keytool -list -v -keystore "\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
   Linux keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+
+=================================================================================================
+ Create keystore for Android build
+=================================================================================================
+
+1. Create Keystore
+
+To create Keystore run this command
+
+move to your directoty - yourapp/android and run below command
+
+keytool -genkey -v -keystore keystore.jks -storepass Android@123 -alias android -keypass Android@123 -keyalg RSA -keysize 2048 -validity 10000
+
+Then fill the required details asked in commandline
+
+Enter keystore password: javacaps
+What is your first and last name?
+[Unknown]: development.sun.com
+What is the name of your organizational unit?
+[Unknown]: Development
+what is the name of your organization?
+[Unknown]: Sun
+What is the name of your City or Locality?
+[Unknown]: Monrovia
+What is the name of your State or Province?
+[Unknown]: California
+What is the two-letter country code for this unit?
+[Unknown]: US
+Is<CN=development.sun.com, OU=Development, O=Sun, L=Monrovia, ST=California, 
+C=US> correct?
+[no]: yes
+
+Enter key password for <client>
+    (RETURN if same as keystore password):
+
+2. Create key.properties file in android directory and add below content to it
+
+storePassword=MyApp@2024
+keyPassword=MyApp@2024
+keyAlias=myapp
+storeFile=../keystore.jks
+
+3. use keys created in step 2 to generate release build
+open app/build.gradle file and add release config
+
+//=============== Keystore Config ===============
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+//===============               ===============
+// this code should ideally be added above appy plugin section
+// apply plugin: 'com.android.application'
+
+Add below code below defaultConfig{} section
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+        }
+
+        debug{
+            signingConfig signingConfigs.debug
+        }
+    }
+
+
+=================================================================================================
+ Create app build (while using app flavors)
+=================================================================================================
+
+set appropriate version code in pubspec.yaml (ex 1.0.0+1)
+
+Command to run App
+flutter run --flavor PROD -t lib/main_prod.dart 
+
+Commant to build APK
+flutter build apk --release --flavor PROD -t lib/main_prod.dart 
+
+Commant to build App Bundle
+flutter build appbundle --release --flavor PROD -t lib/main_prod.dart
+
+
