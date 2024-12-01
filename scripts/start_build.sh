@@ -60,12 +60,13 @@ case $build_type in
   ;;
 esac
 
+# To auto open the directory/folder in which apk/aab is created
 
 apk_path=$(find "build/app/outputs/${apk_path}/" -name "*.${build_extension}" -print -quit)
 flavor_uppercase=$(echo "$flavor" | tr '[:lower:]' '[:upper:]') # Convert to uppercase
 
 if [ -n "$apk_path" ]; then
-  mv "$apk_path" "$(dirname "$apk_path")/StucareAdmin_${build_name}+${build_number}.${build_extension}"
+  mv "$apk_path" "$(dirname "$apk_path")/MyApp_${build_name}+${build_number}.${build_extension}"
   open "$(dirname "$apk_path")"
 else
   echo "Error: ${build_extension} not generated. Please check the build process."
