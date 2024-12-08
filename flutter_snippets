@@ -1038,3 +1038,17 @@ DateTime findLastDateOfTheYear(DateTime dateTime) {
 FIRST DAY OF THE YEAR
 DateTime findFirstDateOfTheYear(DateTime dateTime) {
     return DateTime(dateTime.year, 1, 1); }
+
+
+=================================================================================================
+  Working with FLAVORS
+=================================================================================================
+
+Command to run App
+flutter run --flavor PROD -t lib/main_prod.dart 
+
+Commant to build APK
+flutter build apk --release --flavor PROD -t lib/main_prod.dart 
+
+Commant to build App Bundle
+flutter build appbundle --release --flavor PROD -t lib/main_prod.dart
