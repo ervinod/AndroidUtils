@@ -1052,3 +1052,55 @@ flutter build apk --release --flavor PROD -t lib/main_prod.dart
 
 Commant to build App Bundle
 flutter build appbundle --release --flavor PROD -t lib/main_prod.dart
+
+
+=================================================================================================
+  IOS build related queries and answers
+=================================================================================================
+
+**** Upload ios build when another build is already in review ***
+
+Go to Distribution tab
+From left side menu, Go to General=> App Review
+cancele submission for the build which is in review
+
+
+Now got to Distribution tab 
+Now in iOS section(top left) build should show int red with Rejected by Developer text
+Now in Build section remove old build(for which we cancelled the submission) and 
+selectt new build click SAVE and the Submit for Review
+
+
+*** Adding build on TestFlight for first time ***
+From XCode upload build to TestFlight
+Go to TestFlight tab
+Now create group for External Testing to invite users using email
+click Create group or PLUS button from left side menus
+Fill required details and select build to submit for testing
+Now click Create Public Link button on "Testers" Tab
+It will ask to fill some details
+select Open To Anyone and if required add tester limit
+then SUBMIT
+
+Now it should show some link like
+https://testflight.apple.com/join/JYR4xXXx
+using this link you can invite testers to test your app
+
+Note that testers cannot join public link until the group has an approved build.
+to get build approved it usuallay takes 8-10 hours
+
+
+*** Updating IOS build ***
+
+while updating ios build you need to follow different versioning as compared to Android
+
+suppose the last APPROVED build version is 1.0.0+1
+Now you need to make some minor chnage and want to upload new build again
+this time yon cant use version like 1.0.0+2 (means just incremented the build number)
+It is must to change minor version number like 1.1.11+1
+
+Note that if version is not live 1.0.0+1 and u want to update the build
+then u junst need to increment the build number, but this is applicable
+only when last updated version if not live(means it is only available on TestFlight)
+
+
